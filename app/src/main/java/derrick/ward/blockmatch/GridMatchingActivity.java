@@ -44,10 +44,10 @@ public class GridMatchingActivity extends AppCompatActivity {
     private void loadGameMode(MainActivity.GameMode gameMode, GridLayout gameGrid) {
         switch (gameMode) {
             case EASY:
-                this.generateBlocks(gameGrid, 16);
+                this.generateBlocks(gameGrid, 4);
                 break;
             case MEDIUM:
-                this.generateBlocks(gameGrid, 25);
+                this.generateBlocks(gameGrid, 16);
                 break;
             case DIFFICULT:
                 this.generateBlocks(gameGrid, 36);
