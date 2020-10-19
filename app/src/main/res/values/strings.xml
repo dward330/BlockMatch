@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BlockMatch</string>
+    <string name="gameMode">GameMode</string>
 </resources>
