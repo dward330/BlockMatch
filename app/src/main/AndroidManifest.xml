@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".GridMatchingActivity"></activity>
+        <activity android:name=".EndOfGame"></activity>
     </application>
 
 </manifest>

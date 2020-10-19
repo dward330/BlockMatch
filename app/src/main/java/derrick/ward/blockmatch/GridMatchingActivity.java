@@ -155,22 +155,8 @@ public class GridMatchingActivity extends AppCompatActivity {
             } else {
                 // If Game is Finished
                 if (this.areAllGameBlocksUncovered(gameBlocks)) {
-                    // Show Alert With Score
-                    new AlertDialog.Builder(this)
-                            .setTitle("Game Finished! Score: "+this.score)
-                            .setMessage("Would you like to play again?")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    startNewGame();
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    startNewGame();
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                    // Proceed to Congrats Screen
+                    this.proceedToEndOfGameScreen();
                 }
             }
         } else {
@@ -277,12 +263,13 @@ public class GridMatchingActivity extends AppCompatActivity {
     /*
     * Starts a new Game
     * */
-    private void startNewGame() {
-        // Build Intent to Load Game
-        Intent intentToNewGame = new Intent(this, MainActivity.class);
+    private void proceedToEndOfGameScreen() {
+        // Build Intent for End Of Game Screen
+        Intent intentForEndOfGame = new Intent(this, EndOfGame.class);
+        intentForEndOfGame.putExtra(String.valueOf(R.string.score), score);
 
-        // Start New Game Activity
-        startActivity(intentToNewGame);
+        // Start End of Game Activity
+        startActivity(intentForEndOfGame);
     }
 
     /*
