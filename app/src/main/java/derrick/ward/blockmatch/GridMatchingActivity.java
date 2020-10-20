@@ -20,7 +20,7 @@ public class GridMatchingActivity extends AppCompatActivity {
     private int uncoveredBlock1Location = -1;
     private int uncoveredBlock2Location = -1;
     private int score = 0;
-    private ArrayList<Block> gameBlocks = new ArrayList<Block>();
+    private ArrayList<Block> gameBlocks = new ArrayList<>();
     private CountDownTimer timer;
 
     @Override
@@ -101,7 +101,7 @@ public class GridMatchingActivity extends AppCompatActivity {
                             uncoveredBlock2Location = gameBlock.getBlockLocation();
 
                             // Wait a little bit, so user can see the blocks uncovered
-                            timer = new CountDownTimer(2000, 1000) {
+                            timer = new CountDownTimer(100, 100) {
                                 @Override
                                 public void onTick(long l) {
                                     // Just Wait -> Leave the current blocks select still showing
@@ -185,7 +185,7 @@ public class GridMatchingActivity extends AppCompatActivity {
     private void generateHiddenBlockNumbers(List<Block> gameBlocks) {
         int numOfBlocks = gameBlocks.size();
         int numOfSetsOf2 = numOfBlocks / 2;
-        ArrayList<Integer> usedBlockLocations = new ArrayList<Integer>();
+        ArrayList<Integer> usedBlockLocations = new ArrayList<>();
 
         for(int index = 1; index <= numOfSetsOf2; index++) {
             // Find Hiding Location for first number
@@ -195,7 +195,7 @@ public class GridMatchingActivity extends AppCompatActivity {
             Block blockAtLocation1 = this.getBlockByLocation(hidingLocation1, gameBlocks);
             blockAtLocation1.setHiddenNumber(index);
 
-            usedBlockLocations.add(Integer.valueOf(hidingLocation1));
+            usedBlockLocations.add(hidingLocation1);
 
             // Find Hiding Location for second number
             int hidingLocation2 = this.getRandomNumber(0, gameBlocks.size() -1, usedBlockLocations);
@@ -204,7 +204,7 @@ public class GridMatchingActivity extends AppCompatActivity {
             Block blockAtLocation2 = this.getBlockByLocation(hidingLocation2, gameBlocks);
             blockAtLocation2.setHiddenNumber(index);
 
-            usedBlockLocations.add(Integer.valueOf(hidingLocation2));
+            usedBlockLocations.add(hidingLocation2);
         }
     }
 
@@ -250,12 +250,12 @@ public class GridMatchingActivity extends AppCompatActivity {
         do {
             int number = (int) (Math.random() * (max - min + 1) + min);
 
-            if (!numbersToExclude.contains(Integer.valueOf(number))) {
+            if (!numbersToExclude.contains(number)) {
                 randomNumber = number;
                 randomUniqueNumberFound = true;
             }
 
-        } while(randomUniqueNumberFound != true);
+        } while(!randomUniqueNumberFound);
 
         return randomNumber;
     }
@@ -279,7 +279,7 @@ public class GridMatchingActivity extends AppCompatActivity {
     * */
     private class Block {
         private int hiddenNumber = -1;
-        private int blockLocation = -1;
+        private int blockLocation;
         private TextView gameBlock;
 
         public Block(TextView gameBlock, int blockLocation) {
