@@ -101,7 +101,7 @@ public class GridMatchingActivity extends AppCompatActivity {
                             uncoveredBlock2Location = gameBlock.getBlockLocation();
 
                             // Wait a little bit, so user can see the blocks uncovered
-                            timer = new CountDownTimer(100, 100) {
+                            timer = new CountDownTimer(200, 200) {
                                 @Override
                                 public void onTick(long l) {
                                     // Just Wait -> Leave the current blocks select still showing
