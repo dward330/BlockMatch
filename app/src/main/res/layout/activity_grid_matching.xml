@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     tools:context=".GridMatchingActivity">
-    <GridLayout
+    <GridView
         android:id="@+id/blockGrid"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -16,5 +16,5 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_gravity="center"
         tools:context=".GridMatchingActivity">
-    </GridLayout>
+    </GridView>
 </LinearLayout>
