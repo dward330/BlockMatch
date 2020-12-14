@@ -1,6 +1,7 @@
 package derrick.ward.blockmatch.services.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -13,11 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -34,7 +39,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.models.LeadershipBoardEntry;
+import derrick.ward.blockmatch.screens.ChatMessageDetails;
 import derrick.ward.blockmatch.screens.GameModeChooser;
+import derrick.ward.blockmatch.screens.LandingScreen;
+import derrick.ward.blockmatch.screens.SplashScreen;
+import derrick.ward.blockmatch.screens.fragments.ChatMessages;
 
 /**
  * Leadership Section Adapter
@@ -44,6 +53,7 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
     private List<LeadershipBoardEntry> leadershipSectionEntries = new ArrayList<LeadershipBoardEntry>();
     private RecyclerView recyclerView;
     private GameModeChooser.GameMode gameMode;
+    private LeadershipBoardEntry currentLeaderSelected;
 
     public LeadershipSectionAdapter(RecyclerView recyclerView, GameModeChooser.GameMode gameMode) {
         this.recyclerView = recyclerView;
@@ -71,19 +81,20 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
     public void onBindViewHolder(@NonNull LeaderShipSectionItemViewHolder holder, int position) {
         LeadershipBoardEntry entry = this.leadershipSectionEntries.get(position);
 
-        // If this there is already a leadership board database table reference && If there is a leadership board item change event listener
+        /* Get a reference to this exact user in the Users Database */
         if(holder.userDBRef !=null && holder.userValueEventListener !=null)
         {
             // Remove current item change event listener from the leadership board database table reference
             holder.userDBRef.removeEventListener(holder.userValueEventListener);
         }
 
+        holder.userUID.setText(entry.id);
         holder.userScore.setText("Score: " + entry.score);
 
         /* Get a reference to the leadership board, for this game mode, from our leadership board database*/
         holder.userDBRef = FirebaseDatabase.getInstance().getReference("Users/"+entry.id);
 
-        /* When leadership board entry is first published to client, let display correct information */
+        /* When User entry is first published to client, let display correct information */
         holder.userValueEventListener = holder.userDBRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -122,6 +133,10 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
         holder.entryOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Set Leader Clicked on
+                currentLeaderSelected = new LeadershipBoardEntry();
+                currentLeaderSelected.id = entry.id;
+
                 PopupMenu popupMenu = new PopupMenu(context, view);
                 popupMenu.setOnMenuItemClickListener(LeadershipSectionAdapter.this);
                 MenuInflater menuInflater = popupMenu.getMenuInflater();
@@ -145,7 +160,12 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
         switch(menuItem.getItemId()) {
             case R.id.sendMessage:
 
-                // Run Logic to send a message
+                // Generate New Conversation
+                FirebaseUser signedInUser = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference conversationsDBRef = firebaseDatabase.getReference("ConversationsGroups");
+                DatabaseReference signInUserConversations = conversationsDBRef.child(signedInUser.getUid());
+                signInUserConversations.runTransaction(createNewConversationTransactionHandler(signedInUser.getUid(), currentLeaderSelected.id));
 
                 return true;
             default:
@@ -153,33 +173,86 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
         }
     }
 
-    // Class used to communicate with UI Elements used for each instance of an entry
-    public static class LeaderShipSectionItemViewHolder extends RecyclerView.ViewHolder{
-        public ImageView userProfilePhoto;
-        public ImageView entryOptions;
-        public TextView userDisplayName;
-        public TextView userScore;
+    /**
+     * Generates a Transaction Handler that creates a new Conversation between signed in user and selected leader board user
+     * @return Transaction.Handler
+     */
+    private Transaction.Handler createNewConversationTransactionHandler(String signInUserId, String currentSelectLeaderId) {
+        return new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                HashMap<String, String> signInUserConvoRecipients = (HashMap<String, String>)currentData.getValue();
 
-        public DatabaseReference userDBRef; // Holds a reference to a specific user in the users database table
-        public ValueEventListener userValueEventListener; // Holds a reference to listener to invoke when this entry is changed in the users database table
+                if (signInUserConvoRecipients == null) {
+                    signInUserConvoRecipients = new HashMap<String, String>();
+                }
 
+                signInUserConvoRecipients.put(currentSelectLeaderId, currentSelectLeaderId);
 
-        public LeaderShipSectionItemViewHolder(View v){
-            super(v);
+                currentData.setValue(signInUserConvoRecipients);
 
-            // Bind Layout UI Elements to properties in View Holder Instance
-            this.userDisplayName = v.findViewById(R.id.userDisplayName);
-            this.userScore = v.findViewById(R.id.userScore);
-            this.userProfilePhoto = v.findViewById(R.id.userProfilePhoto);
-            this.entryOptions = v.findViewById(R.id.leadershipBoardEntryOptions);
-        }
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                if (error == null) {
+
+                    Intent chatMessagesIntent = new Intent(context, ChatMessageDetails.class);
+                    chatMessagesIntent.putExtra("messageRecipient", currentSelectLeaderId);
+                    context.startActivity(chatMessagesIntent);
+
+                    /*
+                    int uidComparison = signInUserId.toUpperCase().trim().compareTo(currentLeaderSelected.id.toUpperCase().trim());
+
+                    // Generate New Conversation
+                    FirebaseUser signedInUser = FirebaseAuth.getInstance().getCurrentUser();
+                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                    DatabaseReference conversationsDBRef = firebaseDatabase.getReference("ConversationsChatMessages");
+
+                    if (uidComparison > 0) {
+                        DatabaseReference chatMessagesInConversation = conversationsDBRef.child(currentSelectLeaderId.trim()+"-"+signInUserId.trim());
+                        chatMessagesInConversation.runTransaction(createNewConversationChatMessagesEntryTransactionHandler());
+                    } else if (uidComparison < 0) {
+                        DatabaseReference chatMessagesInConversation = conversationsDBRef.child(signInUserId.trim()+"-"+currentSelectLeaderId.trim());
+                        chatMessagesInConversation.runTransaction(createNewConversationChatMessagesEntryTransactionHandler());
+                    }
+                    */
+                }
+            }
+        };
     }
 
+    /**
+     * Generates a Transaction Handler that creates a new entry of chat messages for the Conversation between signed in user and selected leader board user
+     * @return Transaction.Handler
+     */
+    private Transaction.Handler createNewConversationChatMessagesEntryTransactionHandler() {
+        return new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+
+            }
+        };
+    }
+
+    /**
+     * Listen for Leadership Board Section Changes
+     * @param databaseReference Database Table to Reference
+     */
     private void listenForLeadershipBoardSectionChanges(DatabaseReference databaseReference) {
         databaseReference.addChildEventListener(getChildEventListenerForLeadershipBoardSection());
     }
 
-    /* Listen for Movies CRUD Operations and updates View */
+    /* Listen for Leadership Board CRUD Operations and update View */
     private ChildEventListener getChildEventListenerForLeadershipBoardSection() {
         return new ChildEventListener() {
             @Override
@@ -249,5 +322,29 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
 
             }
         };
+    }
+
+    // Class used to communicate with UI Elements used for each instance of an entry
+    public static class LeaderShipSectionItemViewHolder extends RecyclerView.ViewHolder{
+        public ImageView userProfilePhoto;
+        public ImageView entryOptions;
+        public TextView userUID;
+        public TextView userDisplayName;
+        public TextView userScore;
+
+        public DatabaseReference userDBRef; // Holds a reference to a specific user in the users database table
+        public ValueEventListener userValueEventListener; // Holds a reference to listener to invoke when this entry is changed in the users database table
+
+
+        public LeaderShipSectionItemViewHolder(View v){
+            super(v);
+
+            // Bind Layout UI Elements to properties in View Holder Instance
+            this.userUID = v.findViewById(R.id.userUID);
+            this.userDisplayName = v.findViewById(R.id.userDisplayName);
+            this.userScore = v.findViewById(R.id.userScore);
+            this.userProfilePhoto = v.findViewById(R.id.userProfilePhoto);
+            this.entryOptions = v.findViewById(R.id.leadershipBoardEntryOptions);
+        }
     }
 }

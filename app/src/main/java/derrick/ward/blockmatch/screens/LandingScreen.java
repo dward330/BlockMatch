@@ -92,7 +92,7 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
             case R.id.messagesItem:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new ChatMessages());
+                fragmentTransaction.replace(R.id.fragment_container, new ChatMessages(FirebaseAuth.getInstance().getCurrentUser().getUid()));
                 fragmentTransaction.commit();
                 this.drawerLayout.closeDrawer(GravityCompat.START);
                 break;
