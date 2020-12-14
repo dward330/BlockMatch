@@ -14,12 +14,17 @@
         <item
             android:id="@+id/leadershipBoardItem"
             android:title="@string/navMenuLeadershipBoard"
-            android:icon="@drawable/leadershipboards"
+            android:icon="@drawable/carousel"
             />
         <item
             android:id="@+id/messagesItem"
             android:title="@string/navMenuMessages"
             android:icon="@drawable/chat"
+            />
+        <item
+            android:id="@+id/settingsItem"
+            android:title="@string/navMenuSettings"
+            android:icon="@drawable/settings"
             />
     </group>
 </menu>

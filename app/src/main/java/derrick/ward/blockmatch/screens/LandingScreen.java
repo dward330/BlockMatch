@@ -31,6 +31,7 @@ import androidx.fragment.app.FragmentTransaction;
 import de.hdodenhof.circleimageview.CircleImageView;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.screens.fragments.AboutGameAuthor;
+import derrick.ward.blockmatch.screens.fragments.ChatMessages;
 import derrick.ward.blockmatch.screens.fragments.LeadershipBoard;
 
 public class LandingScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -85,6 +86,13 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, new LeadershipBoard());
+                fragmentTransaction.commit();
+                this.drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.messagesItem:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new ChatMessages());
                 fragmentTransaction.commit();
                 this.drawerLayout.closeDrawer(GravityCompat.START);
                 break;
