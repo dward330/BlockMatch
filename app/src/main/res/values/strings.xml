@@ -6,4 +6,9 @@
     <string name="gameLogoContentDescription">Game Logo</string>
     <string name="leadershipBoardTitle">Leadership Board:</string>
     <string name="joinCompetitionButton">Join Competition</string>
+    <string name="navMenuAboutAuthor">About Game Author</string>
+    <string name="navMenuPlayGame">Join the Competition</string>
+    <string name="navMenuLeadershipBoard">Check Leadership Boards</string>
+    <string name="navMenuMessages">View Messages</string>
+    <string name="gameAuthorBio">My name is Derrick Kyle Ward. I am a Computer Engineer (BS, Working on MS). I am West Indian and my family hails from the countries of Barbados and St. Vincent. I currently work as a Software Engineer. I enjoy reading autobiographies, science-fiction, cyperpunk, and historical non-fiction. My favorites sports to play are ping pong and basketball. I hope you enjoy the game. Its my first published one. I will be continue to iterate and improve.</string>
 </resources>
