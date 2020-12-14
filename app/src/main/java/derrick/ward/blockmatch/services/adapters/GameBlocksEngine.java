@@ -1,11 +1,9 @@
-package derrick.ward.blockmatch;
+package derrick.ward.blockmatch.services.adapters;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -20,12 +18,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import derrick.ward.blockmatch.R;
+import derrick.ward.blockmatch.screens.GameModeChooser;
 import derrick.ward.blockmatch.models.Block;
 import derrick.ward.blockmatch.services.GameActions;
 
 public class GameBlocksEngine extends BaseAdapter {
     private final String LOGTAG = "GameBlocksEngine";
-    private MainActivity.GameMode gameMode;
+    private GameModeChooser.GameMode gameMode;
     private GridView gameGrid;
     private int uncoveredBlock1Location = -1;
     private int uncoveredBlock2Location = -1;
@@ -33,13 +33,12 @@ public class GameBlocksEngine extends BaseAdapter {
     private Context context;
     private CountDownTimer timer;
     private int score = 0;
-    private boolean disableClickEvents = false;
     private int matchesFound = 0;
     private int totalBlocks = 0;
     private Activity activity;
     private GameActions gameActions;
 
-    public GameBlocksEngine(Context context, MainActivity.GameMode gameMode, Activity activity, GameActions gameActions) {
+    public GameBlocksEngine(Context context, GameModeChooser.GameMode gameMode, Activity activity, GameActions gameActions) {
         this.context = context;
         this.gameGrid = ((Activity)context).findViewById(R.id.blockGrid);
         this.gameMode = gameMode;
@@ -86,7 +85,7 @@ public class GameBlocksEngine extends BaseAdapter {
     /*
      * Loads Game Mode
      * */
-    private void loadGameMode(MainActivity.GameMode gameMode, GridView gameGrid) {
+    private void loadGameMode(GameModeChooser.GameMode gameMode, GridView gameGrid) {
         switch (gameMode) {
             case EASY:
                 this.generateBlocks(gameGrid, 4);
@@ -161,14 +160,7 @@ public class GameBlocksEngine extends BaseAdapter {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    notifyDataSetInvalidated();
                                     notifyDataSetChanged();
-
-                                    try {
-                                        Thread.sleep(10);
-                                    }catch (Exception e) {
-                                        Log.d(LOGTAG, "Thread could not stay asleep: interrupted");
-                                    }
                                 }
                             });
 
@@ -180,14 +172,7 @@ public class GameBlocksEngine extends BaseAdapter {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    notifyDataSetInvalidated();
                                     notifyDataSetChanged();
-
-                                    try {
-                                        Thread.sleep(10);
-                                    }catch (Exception e) {
-                                        Log.d(LOGTAG, "Thread could not stay asleep: interrupted");
-                                    }
                                 }
                             });
 
@@ -202,6 +187,7 @@ public class GameBlocksEngine extends BaseAdapter {
                                 public void onFinish() {
                                     // Check if Game is over (Announce Score and start new game)
                                     updateAndCheckGameProgress(uncoveredBlock1Location, uncoveredBlock2Location, gameBlocks);
+                                    timer.cancel();
                                 }
                             };
 
@@ -296,7 +282,6 @@ public class GameBlocksEngine extends BaseAdapter {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        notifyDataSetInvalidated();
                         notifyDataSetChanged();
                     }
                 });

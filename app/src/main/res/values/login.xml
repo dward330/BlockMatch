@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="emailHint">Email</string>
+    <string name="passwordHint">Password</string>
+    <string name="displayNameHint">Display Name</string>
+    <string name="resetPassword">RESET PASSWORD</string>
+    <string name="login">LOGIN</string>
+    <string name="signUp">SIGN UP</string>
+    <string name="signIn">Sign In To Play</string>
+    <string name="resendEmailVerification">RESEND EMAIL VERIFICATION</string>
+</resources>

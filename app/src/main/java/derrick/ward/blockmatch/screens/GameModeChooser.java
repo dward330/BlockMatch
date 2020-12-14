@@ -1,13 +1,14 @@
-package derrick.ward.blockmatch;
+package derrick.ward.blockmatch.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
+import derrick.ward.blockmatch.R;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class GameModeChooser extends AppCompatActivity {
     private final String LOGTAG = "BlockMatch";
     private GameMode gameMode = GameMode.EASY;
 
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.game_mode_chooser);
     }
 
     /*
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Build Intent to Load Game
-        Intent intentToLoadGame = new Intent(this, GridMatchingActivity.class);
+        Intent intentToLoadGame = new Intent(this, GridMatchingGame.class);
         intentToLoadGame.putExtra(String.valueOf(R.string.gameMode), this.gameMode);
 
         // Start Game Activity

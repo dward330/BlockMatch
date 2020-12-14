@@ -1,22 +1,22 @@
-package derrick.ward.blockmatch;
+package derrick.ward.blockmatch.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
+import derrick.ward.blockmatch.R;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 public class EndOfGame extends AppCompatActivity {
     private final String LOGTAG = "BlockMatch";
-    private MainActivity.GameMode gameMode = MainActivity.GameMode.EASY;
+    private GameModeChooser.GameMode gameMode = GameModeChooser.GameMode.EASY;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_end_of_game);
+        setContentView(R.layout.end_of_game);
 
         Intent intent = getIntent();
         int score = intent.getIntExtra(String.valueOf(R.string.score), 0);
@@ -32,7 +32,7 @@ public class EndOfGame extends AppCompatActivity {
      * */
     public void startNewGame(View view) {
         // Build Intent to Load Game
-        Intent intentToNewGame = new Intent(this, MainActivity.class);
+        Intent intentToNewGame = new Intent(this, GameModeChooser.class);
 
         // Start New Game Activity
         startActivity(intentToNewGame);

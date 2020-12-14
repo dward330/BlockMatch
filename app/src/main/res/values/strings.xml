@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Block Match</string>
+    <string name="app_author">By Derrick Kyle Ward</string>
     <string name="gameMode">GameMode</string>
     <string name="score">Score</string>
+    <string name="gameLogoContentDescription">Game Logo</string>
 </resources>

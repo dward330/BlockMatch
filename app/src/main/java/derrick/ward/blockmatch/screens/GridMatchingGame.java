@@ -1,28 +1,22 @@
-package derrick.ward.blockmatch;
+package derrick.ward.blockmatch.screens;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import derrick.ward.blockmatch.screens.EndOfGame;
+import derrick.ward.blockmatch.screens.GameModeChooser;
+import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.models.Block;
 import derrick.ward.blockmatch.services.GameActions;
+import derrick.ward.blockmatch.services.adapters.GameBlocksEngine;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class GridMatchingActivity extends AppCompatActivity implements GameActions {
+public class GridMatchingGame extends AppCompatActivity implements GameActions {
     private final String LOGTAG = "BlockMatch";
     private int uncoveredBlock1Location = -1;
     private int uncoveredBlock2Location = -1;
@@ -33,13 +27,13 @@ public class GridMatchingActivity extends AppCompatActivity implements GameActio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_grid_matching);
+        setContentView(R.layout.grid_matching_game);
 
         GridView gameGrid = findViewById(R.id.blockGrid);
 
         // Get Game Mode
         Intent intent = getIntent();
-        MainActivity.GameMode gameMode = (MainActivity.GameMode) intent.getSerializableExtra(String.valueOf(R.string.gameMode));
+        GameModeChooser.GameMode gameMode = (GameModeChooser.GameMode) intent.getSerializableExtra(String.valueOf(R.string.gameMode));
 
         // Launch Game
         GameBlocksEngine gameBlocksEngine = new GameBlocksEngine(this, gameMode, this, this);
@@ -47,6 +41,10 @@ public class GridMatchingActivity extends AppCompatActivity implements GameActio
         gameGrid.setAdapter(gameBlocksEngine);
     }
 
+    /**
+     * Ends Game
+     * @param score latest score the gamer has
+     */
     public void GameFinished(int score) {
         this.score = score;
         this.proceedToEndOfGameScreen();
