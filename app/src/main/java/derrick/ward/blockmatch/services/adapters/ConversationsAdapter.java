@@ -169,31 +169,29 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
         return new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {
-                // Get User's Id
-                String userId = dataSnapshot.getKey();
+                // Get Message Recipient's Id
+                String messgeRecipientId = dataSnapshot.getKey();
 
-                // Get Leadership Board Entry
-                // HashMap<String, Object> usersConversations = (HashMap<String, Object>)dataSnapshot.getValue();
+                if (messgeRecipientId != null) {
 
-                if (dataSnapshot != null) {
-                    /*
                     // Map to Strong Model for a conversation
                     Conversation conversation = new Conversation();
-                    conversation.recipientId = userId;
+                    conversation.recipientId = messgeRecipientId;
 
                     // Add Entry Collection of entries
                     conversations.add(conversation);
 
+                    /*
                     Collections.sort(conversations, new Comparator<Conversation>() {
                         @Override
                         public int compare(Conversation m1, Conversation m2) {
                             return (int)(((float)m1.timestamp) - ((float)m2.timestamp));
                         }
                     });
+                    */
 
                     ConversationsAdapter.this.notifyDataSetChanged(); // Trigger adapter to reprocess all conversation entries
                     ConversationsAdapter.this.recyclerView.scrollToPosition(conversations.size()-1); // Tell adapter to scroll down to the last conversation
-                    */
                 }
             }
 

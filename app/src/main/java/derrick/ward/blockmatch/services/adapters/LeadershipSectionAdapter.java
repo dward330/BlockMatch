@@ -165,7 +165,7 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                 DatabaseReference conversationsDBRef = firebaseDatabase.getReference("ConversationsGroups");
                 DatabaseReference signInUserConversations = conversationsDBRef.child(signedInUser.getUid());
-                signInUserConversations.runTransaction(createNewConversationTransactionHandler(signedInUser.getUid(), currentLeaderSelected.id));
+                signInUserConversations.runTransaction(createNewConversationTransactionHandler(currentLeaderSelected.id, signedInUser.getUid()));
 
                 return true;
             default:
@@ -174,10 +174,10 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
     }
 
     /**
-     * Generates a Transaction Handler that creates a new Conversation between signed in user and selected leader board user
+     * Generates a Transaction Handler that creates a new Conversation with supplied user Id
      * @return Transaction.Handler
      */
-    private Transaction.Handler createNewConversationTransactionHandler(String signInUserId, String currentSelectLeaderId) {
+    private Transaction.Handler createNewConversationTransactionHandler(String messageRecipient, String signedInUser) {
         return new Transaction.Handler() {
             @NonNull
             @Override
@@ -188,7 +188,7 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
                     signInUserConvoRecipients = new HashMap<String, String>();
                 }
 
-                signInUserConvoRecipients.put(currentSelectLeaderId, currentSelectLeaderId);
+                signInUserConvoRecipients.put(messageRecipient, messageRecipient);
 
                 currentData.setValue(signInUserConvoRecipients);
 
@@ -199,9 +199,11 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
             public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                 if (error == null) {
 
-                    Intent chatMessagesIntent = new Intent(context, ChatMessageDetails.class);
-                    chatMessagesIntent.putExtra("messageRecipient", currentSelectLeaderId);
-                    context.startActivity(chatMessagesIntent);
+                    // Generate New Reversed Conversation
+                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                    DatabaseReference conversationsDBRef = firebaseDatabase.getReference("ConversationsGroups");
+                    DatabaseReference recipientUserConversations = conversationsDBRef.child(messageRecipient);
+                    recipientUserConversations.runTransaction(createNewReversedCopiedConversationTransactionHandler(signedInUser, messageRecipient));
 
                     /*
                     int uidComparison = signInUserId.toUpperCase().trim().compareTo(currentLeaderSelected.id.toUpperCase().trim());
@@ -223,6 +225,41 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
             }
         };
     }
+
+    /**
+     * Generates a Transaction Handler that creates a reverse copied Conversation with supplied user Id
+     * @return Transaction.Handler
+     */
+    private Transaction.Handler createNewReversedCopiedConversationTransactionHandler(String userId, String messageRecipient) {
+        return new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                HashMap<String, String> signInUserConvoRecipients = (HashMap<String, String>)currentData.getValue();
+
+                if (signInUserConvoRecipients == null) {
+                    signInUserConvoRecipients = new HashMap<String, String>();
+                }
+
+                signInUserConvoRecipients.put(userId, userId);
+
+                currentData.setValue(signInUserConvoRecipients);
+
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                if (error == null) {
+
+                    Intent chatMessagesIntent = new Intent(context, ChatMessageDetails.class);
+                    chatMessagesIntent.putExtra("messageRecipient", messageRecipient);
+                    context.startActivity(chatMessagesIntent);
+                }
+            }
+        };
+    }
+
 
     /**
      * Generates a Transaction Handler that creates a new entry of chat messages for the Conversation between signed in user and selected leader board user
