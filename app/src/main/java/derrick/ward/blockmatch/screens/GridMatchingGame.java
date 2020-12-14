@@ -23,6 +23,7 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
     private int score = 0;
     private ArrayList<Block> gameBlocks = new ArrayList<>();
     private CountDownTimer timer;
+    private GameModeChooser.GameMode gameMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +34,10 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
 
         // Get Game Mode
         Intent intent = getIntent();
-        GameModeChooser.GameMode gameMode = (GameModeChooser.GameMode) intent.getSerializableExtra(String.valueOf(R.string.gameMode));
+        this.gameMode = (GameModeChooser.GameMode) intent.getSerializableExtra(String.valueOf(R.string.gameMode));
 
         // Launch Game
-        GameBlocksEngine gameBlocksEngine = new GameBlocksEngine(this, gameMode, this, this);
+        GameBlocksEngine gameBlocksEngine = new GameBlocksEngine(this, this.gameMode, this, this);
         gameGrid.setGravity(Gravity.CENTER);
         gameGrid.setAdapter(gameBlocksEngine);
     }
@@ -57,6 +58,7 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
         // Build Intent for End Of Game Screen
         Intent intentForEndOfGame = new Intent(this, EndOfGame.class);
         intentForEndOfGame.putExtra(String.valueOf(R.string.score), score);
+        intentForEndOfGame.putExtra(String.valueOf(R.string.gameMode), this.gameMode);
 
         // Start End of Game Activity
         startActivity(intentForEndOfGame);

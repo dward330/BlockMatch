@@ -119,7 +119,7 @@ public class UserRegistration extends Fragment implements PopupMenu.OnMenuItemCl
                     @Override
                     public void onSuccess(Void aVoid) {
                         // Move this to after the user is saved in the database
-                        Toast.makeText(context, "Sign up Successful! Please verify your email before trying to login. Check your email for the process.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Sign up Successful! Please verify your email before trying to login. Check your email for the process.", Toast.LENGTH_LONG).show();
 
                         FirebaseStorage storage = FirebaseStorage.getInstance();
                         String photoFileName = FirebaseUtility.getUniqueName()+".jpg";
