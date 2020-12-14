@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gameModeChooserTitle">Welcome to Block Match</string>
+    <string name="gameModeEasy">EASY</string>
+    <string name="gameModeMedium">MEDIUM</string>
+    <string name="gameModeDifficult">DIFFICULT</string>
+    <string name="gameAuthor">By Derrick Kyle Ward</string>
+</resources>

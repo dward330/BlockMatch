@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.EndOfGame">
+    tools:context=".screens.EndOfGame"
+    android:background="@color/black">
 <TextView
     android:id="@+id/scoreTextView"
     android:layout_width="match_parent"
@@ -15,14 +16,14 @@
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
     android:textSize="50dp"
-    android:textColor="@color/green"/>
+    android:textColor="@color/red_pink"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        style="@style/loginSignUpButtons"
         android:text="Play New Game"
-        android:onClick="startNewGame"
-        />
+        android:onClick="startNewGame"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

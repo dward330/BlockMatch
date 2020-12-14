@@ -36,5 +36,6 @@ public class EndOfGame extends AppCompatActivity {
 
         // Start New Game Activity
         startActivity(intentToNewGame);
+        finish();
     }
 }

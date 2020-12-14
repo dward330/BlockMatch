@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.GameModeChooser">
-
+    tools:context=".screens.GameModeChooser"
+    android:background="@color/black">
     <TextView
         android:id="@+id/gameTitle"
-        android:textSize="20dp"
-        android:text="Welcome to Block Match"
+        android:textSize="25dp"
+        android:text="@string/gameModeChooserTitle"
+        android:textColor="@color/red_pink"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -17,17 +19,30 @@
         app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/gameAuthor"
-        android:textSize="14dp"
-        android:text="By Derrick Ward"
+        android:textSize="15dp"
+        android:text="@string/gameAuthor"
+        android:textColor="@color/red_pink"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/gameTitle"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gameTitle" />
+    <ImageView
+        android:id="@+id/splashLogo"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:src="@drawable/network"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_gravity="center"/>
     <Button
         android:id="@+id/easyModeButton"
-        android:text="Easy"
-        android:layout_width="120dp"
+        android:text="@string/gameModeEasy"
+        android:layout_width="match_parent"
+        style="@style/loginSignUpButtons"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/mediumModeButton"
         app:layout_constraintRight_toRightOf="parent"
@@ -35,8 +50,9 @@
         android:onClick="setGameMode"/>
     <Button
         android:id="@+id/mediumModeButton"
-        android:text="Medium"
-        android:layout_width="120dp"
+        android:text="@string/gameModeMedium"
+        android:layout_width="match_parent"
+        style="@style/loginSignUpButtons"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/difficultModeButton"
         app:layout_constraintRight_toRightOf="parent"
@@ -44,8 +60,9 @@
         android:onClick="setGameMode"/>
     <Button
         android:id="@+id/difficultModeButton"
-        android:text="Difficult"
-        android:layout_width="120dp"
+        android:text="@string/gameModeDifficult"
+        android:layout_width="match_parent"
+        style="@style/loginSignUpButtons"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"

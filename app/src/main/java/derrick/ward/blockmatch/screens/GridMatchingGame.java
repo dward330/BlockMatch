@@ -60,5 +60,6 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
 
         // Start End of Game Activity
         startActivity(intentForEndOfGame);
+        finish();
     }
 }
