@@ -40,7 +40,7 @@ public class EndOfGame extends AppCompatActivity {
         DatabaseReference userLeadershipBoardEntry = firebaseDatabase.getReference(pathToUserLeadershipBoardEntry);
         userLeadershipBoardEntry.runTransaction(updateUserScoreOnLeaderShipBoard(userId, score, gameMode));
 
-        String message = "Congrats on completing the puzzle!\n\nYour Score was :"+" "+score;
+        String message = "Congrats on finding all block matches!\n\nYour Score:"+" "+score;
 
         // Write Score and Congrats Message
         TextView textView = findViewById(R.id.scoreTextView);
@@ -91,6 +91,15 @@ public class EndOfGame extends AppCompatActivity {
 
         // Start New Game Activity
         startActivity(intentToNewGame);
+        finish();
+    }
+
+    public void seeLeadershipBoard(View view) {
+        // Build Intent to See Leadership Board
+        Intent intentToLeadershipBoard = new Intent(this, LandingScreen.class);
+
+        // Start Leadership Board Activity
+        startActivity(intentToLeadershipBoard);
         finish();
     }
 }

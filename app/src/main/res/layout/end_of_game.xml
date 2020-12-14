@@ -15,15 +15,27 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
-    android:textSize="50dp"
-    android:textColor="@color/red_pink"/>
+    android:textSize="30dp"
+    android:textColor="@color/red_pink"
+    android:gravity="center"/>
     <Button
+        android:id="@+id/newGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/seeLeadershipBoard"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        style="@style/loginSignUpButtons"
+        android:text="Play New Game"
+        android:onClick="startNewGame"/>
+    <Button
+        android:id="@+id/seeLeadershipBoard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         style="@style/loginSignUpButtons"
-        android:text="Play New Game"
-        android:onClick="startNewGame"/>
+        android:text="See Leadership Boards"
+        android:onClick="seeLeadershipBoard"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

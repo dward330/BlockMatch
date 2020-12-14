@@ -1,5 +1,7 @@
 package derrick.ward.blockmatch.services;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,10 +13,13 @@ import derrick.ward.blockmatch.screens.GameModeChooser;
 import derrick.ward.blockmatch.screens.fragments.LeadershipSection;
 
 public class LeadershipBoardPager extends FragmentStatePagerAdapter {
+    private Context context;
     private ArrayList<String> leadershipBoardSections = new ArrayList<>();
 
-    public LeadershipBoardPager(FragmentManager fragmentManager) {
+    public LeadershipBoardPager(Context context, FragmentManager fragmentManager) {
         super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+
+        this.context = context;
 
         this.leadershipBoardSections.add("EASY MODE");
         this.leadershipBoardSections.add("MEDIUM MODE");
@@ -27,13 +32,13 @@ public class LeadershipBoardPager extends FragmentStatePagerAdapter {
 
         switch (i) {
             case 0:
-                leadershipSection = new LeadershipSection(GameModeChooser.GameMode.EASY);
+                leadershipSection = new LeadershipSection(context, GameModeChooser.GameMode.EASY);
                 break;
             case 1:
-                leadershipSection = new LeadershipSection(GameModeChooser.GameMode.MEDIUM);
+                leadershipSection = new LeadershipSection(context, GameModeChooser.GameMode.MEDIUM);
                 break;
             case 2:
-                leadershipSection = new LeadershipSection(GameModeChooser.GameMode.DIFFICULT);
+                leadershipSection = new LeadershipSection(context, GameModeChooser.GameMode.DIFFICULT);
                 break;
         }
 

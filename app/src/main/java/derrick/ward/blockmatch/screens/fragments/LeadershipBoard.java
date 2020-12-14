@@ -19,7 +19,7 @@ public class LeadershipBoard extends Fragment {
         View leadershipBoardFragment = inflater.inflate(R.layout.leadership_board, container, false);
         TabLayout gameModes = leadershipBoardFragment.findViewById(R.id.gameModes);
 
-        LeadershipBoardPager leadershipBoardPager = new LeadershipBoardPager(getFragmentManager());
+        LeadershipBoardPager leadershipBoardPager = new LeadershipBoardPager(leadershipBoardFragment.getContext(), getFragmentManager());
         ViewPager leadershipBoardSectionPager = leadershipBoardFragment.findViewById(R.id.leadershipBoard);
         leadershipBoardSectionPager.setAdapter(leadershipBoardPager);
         gameModes.setupWithViewPager(leadershipBoardSectionPager);

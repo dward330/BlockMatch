@@ -5,4 +5,5 @@
     <string name="score">Score</string>
     <string name="gameLogoContentDescription">Game Logo</string>
     <string name="leadershipBoardTitle">Leadership Board:</string>
+    <string name="joinCompetitionButton">Join Competition</string>
 </resources>

@@ -1,9 +1,12 @@
 package derrick.ward.blockmatch.screens.fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -12,12 +15,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.screens.GameModeChooser;
+import derrick.ward.blockmatch.screens.LandingScreen;
+import derrick.ward.blockmatch.screens.SplashScreen;
 import derrick.ward.blockmatch.services.adapters.LeadershipSectionAdapter;
 
 public class LeadershipSection extends Fragment {
     private GameModeChooser.GameMode gameMode;
+    private Context context;
 
-    public LeadershipSection (GameModeChooser.GameMode gameMode) {
+    public LeadershipSection (Context context, GameModeChooser.GameMode gameMode) {
+        this.context = context;
         this.gameMode = gameMode;
     }
 
@@ -36,6 +43,15 @@ public class LeadershipSection extends Fragment {
 
         // Set Adapter
         recyclerView.setAdapter(leadershipSectionAdapter);
+
+        // Set Up Join Competition Button
+        Button button = leadershipSection.findViewById(R.id.joinCompetition);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity( new Intent(context, GameModeChooser.class));
+            }
+        });
 
         return leadershipSection;
     }
