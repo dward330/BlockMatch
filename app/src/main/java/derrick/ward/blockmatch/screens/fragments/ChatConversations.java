@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.services.adapters.ConversationsAdapter;
 
-public class ChatMessages extends Fragment {
+public class ChatConversations extends Fragment {
     private String signedInUser;
 
-    public ChatMessages(String signInUser) {
+    public ChatConversations(String signInUser) {
         this.signedInUser = signInUser;
     }
 

@@ -39,11 +39,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.models.LeadershipBoardEntry;
-import derrick.ward.blockmatch.screens.ChatMessageDetails;
+import derrick.ward.blockmatch.screens.ChatConversationDetails;
 import derrick.ward.blockmatch.screens.GameModeChooser;
-import derrick.ward.blockmatch.screens.LandingScreen;
-import derrick.ward.blockmatch.screens.SplashScreen;
-import derrick.ward.blockmatch.screens.fragments.ChatMessages;
 
 /**
  * Leadership Section Adapter
@@ -252,7 +249,7 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
             public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                 if (error == null) {
 
-                    Intent chatMessagesIntent = new Intent(context, ChatMessageDetails.class);
+                    Intent chatMessagesIntent = new Intent(context, ChatConversationDetails.class);
                     chatMessagesIntent.putExtra("messageRecipient", messageRecipient);
                     context.startActivity(chatMessagesIntent);
                 }

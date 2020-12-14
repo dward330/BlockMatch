@@ -34,7 +34,7 @@
         <activity android:name=".screens.GridMatchingGame"></activity>
         <activity android:name=".screens.EndOfGame"></activity>
         <activity
-            android:name=".screens.ChatMessageDetails"
+            android:name=".screens.ChatConversationDetails"
             android:theme="@style/NoTitle"></activity>
     </application>
 

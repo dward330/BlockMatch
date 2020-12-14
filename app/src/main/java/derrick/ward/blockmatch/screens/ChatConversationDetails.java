@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import derrick.ward.blockmatch.R;
 
-public class ChatMessageDetails extends AppCompatActivity {
+public class ChatConversationDetails extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
