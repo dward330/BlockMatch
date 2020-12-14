@@ -26,13 +26,13 @@ public class LeadershipBoardPager extends FragmentStatePagerAdapter {
         Fragment leadershipSection = null;
 
         switch (i) {
-            case 1:
+            case 0:
                 leadershipSection = new LeadershipSection(GameModeChooser.GameMode.EASY);
                 break;
-            case 2:
+            case 1:
                 leadershipSection = new LeadershipSection(GameModeChooser.GameMode.MEDIUM);
                 break;
-            case 3:
+            case 2:
                 leadershipSection = new LeadershipSection(GameModeChooser.GameMode.DIFFICULT);
                 break;
         }

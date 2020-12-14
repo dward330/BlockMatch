@@ -47,7 +47,7 @@ public class SplashScreen extends AppCompatActivity {
                 } else {
                     if (signedInFirebaseUser.isEmailVerified()) {
                         Toast.makeText(SplashScreen.this, "Signed in User Detected", Toast.LENGTH_SHORT).show();
-                        startActivity( new Intent(SplashScreen.this, GameModeChooser.class));
+                        startActivity( new Intent(SplashScreen.this, LandingScreen.class));
                         finish();
                     } else {
                         Toast.makeText(SplashScreen.this, "Please verify your email before trying to login. Check your email for process.", Toast.LENGTH_SHORT).show();

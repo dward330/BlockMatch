@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.screens.GameModeChooser;
+import derrick.ward.blockmatch.screens.LandingScreen;
 import derrick.ward.blockmatch.screens.LoginSignUp;
 
 /**
@@ -144,7 +145,7 @@ public class Login extends Fragment {
                         if (signedInUser.isEmailVerified()) {
                             Toast.makeText(context, "Login Successful.", Toast.LENGTH_SHORT).show();
 
-                            startActivity(new Intent((Activity)context, GameModeChooser.class));
+                            startActivity(new Intent((Activity)context, LandingScreen.class));
                             ((Activity) context).finish();
                         } else {
                             Toast.makeText(context, "Please verify your email first. Check your email for a sent copy of the process.", Toast.LENGTH_SHORT).show();

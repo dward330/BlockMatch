@@ -12,7 +12,7 @@
         android:background="@color/black"
         app:tabTextColor="@color/red_pink"
         app:tabMode="scrollable"
-        app:tabIndicatorColor="@color/white"
+        app:tabIndicatorColor="@color/red_pink"
         app:tabGravity="fill">
     </com.google.android.material.tabs.TabLayout>
     <androidx.viewpager.widget.ViewPager
