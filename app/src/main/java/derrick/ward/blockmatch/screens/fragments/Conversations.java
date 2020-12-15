@@ -11,16 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.services.adapters.ConversationsAdapter;
 
-public class ChatConversations extends Fragment {
+public class Conversations extends Fragment {
     private String signedInUser;
 
-    public ChatConversations(String signInUser) {
+    public Conversations(String signInUser) {
         this.signedInUser = signInUser;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View chatMessages = inflater.inflate(R.layout.chat_messages, container, false);
+        View chatMessages = inflater.inflate(R.layout.conversations, container, false);
 
         RecyclerView recyclerView = chatMessages.findViewById(R.id.chatMessages);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(chatMessages.getContext());

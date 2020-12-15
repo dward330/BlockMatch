@@ -1,6 +1,7 @@
 package derrick.ward.blockmatch.services.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -24,16 +25,16 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.models.Conversation;
+import derrick.ward.blockmatch.screens.ChatConversation;
 
 public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdapter.ConversationItemViewHolder> implements PopupMenu.OnMenuItemClickListener {
     private Context context;
@@ -57,7 +58,7 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
         this.context = parent.getContext();
 
         //Create a new instance of this layout as a View
-        View v = LayoutInflater.from(this.context).inflate(R.layout.chat_message_group_item, parent, false);
+        View v = LayoutInflater.from(this.context).inflate(R.layout.conversation_item, parent, false);
 
         final ConversationsAdapter.ConversationItemViewHolder viewHolder = new ConversationsAdapter.ConversationItemViewHolder(v);
 
@@ -114,6 +115,14 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
         });
 
         // Set card click should open up conversation Chat Details
+        holder.conversationContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent chatMessagesIntent = new Intent(context, ChatConversation.class);
+                chatMessagesIntent.putExtra("messageRecipient", entry.recipientId);
+                context.startActivity(chatMessagesIntent);
+            }
+        });
 
         // Set Options On Click
         holder.convoOptions.setOnClickListener(new View.OnClickListener() {
@@ -241,6 +250,7 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
         public TextView userUID;
         public TextView userDisplayName;
         public TextView userEmail;
+        public CardView conversationContainer;
 
         public DatabaseReference userDBRef; // Holds a reference to a specific user in the users database table
         public ValueEventListener userValueEventListener; // Holds a reference to listener to invoke when this entry is changed in the users database table
@@ -255,6 +265,7 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
             this.userEmail = v.findViewById(R.id.convoEmail);
             this.userProfilePhoto = v.findViewById(R.id.convoUserProfilePhoto);
             this.convoOptions = v.findViewById(R.id.convoOptions);
+            this.conversationContainer = v.findViewById(R.id.conversation_item_container);
         }
     }
 }

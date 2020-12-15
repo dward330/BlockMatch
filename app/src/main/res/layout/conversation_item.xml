@@ -7,7 +7,8 @@
     app:cardBackgroundColor="@color/white"
     app:cardElevation="6dp"
     app:cardCornerRadius="6dp"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    android:id="@+id/conversation_item_container">
     <LinearLayout
         android:id="@+id/convoUserDetails"
         android:layout_width="match_parent"

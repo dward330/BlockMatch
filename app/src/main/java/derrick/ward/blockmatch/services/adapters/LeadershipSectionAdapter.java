@@ -39,7 +39,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.models.LeadershipBoardEntry;
-import derrick.ward.blockmatch.screens.ChatConversationDetails;
+import derrick.ward.blockmatch.screens.ChatConversation;
 import derrick.ward.blockmatch.screens.GameModeChooser;
 
 /**
@@ -249,7 +249,7 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
             public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                 if (error == null) {
 
-                    Intent chatMessagesIntent = new Intent(context, ChatConversationDetails.class);
+                    Intent chatMessagesIntent = new Intent(context, ChatConversation.class);
                     chatMessagesIntent.putExtra("messageRecipient", messageRecipient);
                     context.startActivity(chatMessagesIntent);
                 }
