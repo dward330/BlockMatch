@@ -14,11 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -158,6 +161,84 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
                 // Dialog Asking if user is sure they want to delete conversation
 
                 // Delete Conversation
+                String signInUserId = FirebaseAuth.getInstance().getCurrentUser().getUid().trim();
+                String messageRecipientId = currentConversationSelected.recipientId.trim();
+
+                DatabaseReference conversationGroupDBRef = FirebaseDatabase.getInstance().getReference("ConversationsGroups");
+                DatabaseReference signedInUserConvoWithRecipient = conversationGroupDBRef.child(signInUserId).child(messageRecipientId);
+                signedInUserConvoWithRecipient.runTransaction(new Transaction.Handler() {
+                    @NonNull
+                    @Override
+                    public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                        /*
+                        HashMap<String, Object> currentConversations = (HashMap<String, Object>) currentData.getValue();
+
+                        if (currentConversations != null) {
+                            currentConversations.remove(messageRecipientId);
+                            currentData.setValue(currentConversations);
+                        }*/
+
+                        currentData.setValue(null);
+
+                        return Transaction.success(currentData);
+                    }
+
+                    @Override
+                    public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                        if (error == null) {
+                            DatabaseReference recipientConvoWithSignedInUser = conversationGroupDBRef.child(currentConversationSelected.recipientId).child(signInUserId);
+                            recipientConvoWithSignedInUser.runTransaction(new Transaction.Handler() {
+                                @NonNull
+                                @Override
+                                public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                                    /*
+                                    HashMap<String, Object> currentConversations = (HashMap<String, Object>) currentData.getValue();
+
+                                    if (currentConversations != null) {
+                                        currentConversations.remove(signInUserId);
+                                        currentData.setValue(currentConversations);
+                                    }*/
+
+                                    currentData.setValue(null);
+
+                                    return Transaction.success(currentData);
+                                }
+
+                                @Override
+                                public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                                    if (error == null) {
+                                        String signInUserId = FirebaseAuth.getInstance().getCurrentUser().getUid().trim();
+                                        String messageRecipientId = currentConversationSelected.recipientId.trim();
+                                        String conversationChatMessagesPrimaryKey = null;
+                                        int uidComparison = signInUserId.toUpperCase().compareTo(messageRecipientId.toUpperCase());
+
+                                        if (uidComparison > 0) {
+                                            conversationChatMessagesPrimaryKey = messageRecipientId.trim()+"-"+signInUserId.trim();
+                                        } else if (uidComparison < 0) {
+                                            conversationChatMessagesPrimaryKey = signInUserId.trim()+"-"+messageRecipientId.trim();
+                                        }
+                                        DatabaseReference conversationChatMessageDBRef = FirebaseDatabase.getInstance().getReference("ConversationChatMessages");
+                                        DatabaseReference currentConversationToDelete = conversationChatMessageDBRef.child(conversationChatMessagesPrimaryKey);
+                                        currentConversationToDelete.runTransaction(new Transaction.Handler() {
+                                            @NonNull
+                                            @Override
+                                            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                                                currentData.setValue(null);
+
+                                                return Transaction.success(currentData);
+                                            }
+
+                                            @Override
+                                            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
 
                 return true;
             default:
@@ -206,30 +287,33 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {
-                /*
-                Movie movieChanged = getMovieDataFromHashMap((HashMap<String, Object>)dataSnapshot.getValue());
-
-                boolean positionFound = false;
-                int position = 0;
-                for (Movie movie : movies) {
-                    if (movie.name.toUpperCase().equals(movieChanged.name.toUpperCase())) {
-                        positionFound = true;
-                        break;
-                    }
-                    position++;
-                }
-
-                if (positionFound == true) {
-                    movies.set(position, movieChanged);
-                    MoviesRecyclerAdapter.this.notifyItemChanged(position);
-
-                    MoviesRecyclerAdapter.this.recyclerView.scrollToPosition(position);
-
-                }*/
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                // Get Message Recipient's Id
+                String messgeRecipientId = snapshot.getKey();
+
+                if (messgeRecipientId != null) {
+
+                    // Find the conversation to remove
+                    int position = 0;
+                    boolean conversationFound = false;
+                    for (Conversation conversation:conversations) {
+                        if (conversation.recipientId.trim().toUpperCase().compareTo(messgeRecipientId.toUpperCase().trim()) == 0) {
+                            conversationFound = true;
+                            break;
+                        }
+                        position++;
+                    }
+
+                    if (conversationFound) {
+                        conversations.remove(position);
+                    }
+
+                    ConversationsAdapter.this.notifyDataSetChanged(); // Trigger adapter to reprocess all conversation entries
+                    ConversationsAdapter.this.recyclerView.scrollToPosition(conversations.size() > 0 ? conversations.size()-1 : 0); // Tell adapter to scroll down to the last conversation
+                }
             }
 
             @Override
