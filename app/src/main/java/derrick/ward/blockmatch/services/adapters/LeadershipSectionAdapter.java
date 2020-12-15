@@ -159,6 +159,12 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
 
                 // Generate New Conversation
                 FirebaseUser signedInUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                // Do not allow a person to message themselves
+                if (signedInUser.getUid().toUpperCase().trim().compareTo(currentLeaderSelected.id.toUpperCase().trim()) == 0) {
+                    return true;
+                }
+
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                 DatabaseReference conversationsDBRef = firebaseDatabase.getReference("ConversationsGroups");
                 DatabaseReference signInUserConversations = conversationsDBRef.child(signedInUser.getUid());
