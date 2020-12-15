@@ -126,7 +126,9 @@ public class ChatConversation extends AppCompatActivity {
 
             @Override
             public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-
+                if (error == null) {
+                    messageBox.setText("");
+                }
             }
         };
     }
