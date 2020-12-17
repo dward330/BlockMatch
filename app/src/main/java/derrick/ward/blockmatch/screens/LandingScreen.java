@@ -33,6 +33,7 @@ import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.screens.fragments.AboutGameAuthor;
 import derrick.ward.blockmatch.screens.fragments.Conversations;
 import derrick.ward.blockmatch.screens.fragments.LeadershipBoard;
+import derrick.ward.blockmatch.screens.fragments.Settings;
 
 public class LandingScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
@@ -93,6 +94,13 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, new Conversations(FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                fragmentTransaction.commit();
+                this.drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.settingsItem:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new Settings(this));
                 fragmentTransaction.commit();
                 this.drawerLayout.closeDrawer(GravityCompat.START);
                 break;

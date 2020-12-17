@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="musicSwitch">Music  </string>
+    <string name="publishScoresSwitch">Publish Scores  </string>
+    <string name="chooseBlockCover">Choose Block Cover Image:</string>
+    <string-array name="block_cover_options">
+        <item>Gift Box</item>
+        <item>Santa</item>
+        <item>Reindeer</item>
+        <item>Elf</item>
+    </string-array>
+</resources>
