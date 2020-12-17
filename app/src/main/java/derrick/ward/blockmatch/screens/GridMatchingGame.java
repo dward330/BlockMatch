@@ -1,5 +1,6 @@
 package derrick.ward.blockmatch.screens;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import derrick.ward.blockmatch.screens.EndOfGame;
 import derrick.ward.blockmatch.screens.GameModeChooser;
@@ -9,6 +10,7 @@ import derrick.ward.blockmatch.services.GameActions;
 import derrick.ward.blockmatch.services.adapters.GameBlocksEngine;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Gravity;
@@ -22,8 +24,8 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
     private int uncoveredBlock2Location = -1;
     private int score = 0;
     private ArrayList<Block> gameBlocks = new ArrayList<>();
-    private CountDownTimer timer;
     private GameModeChooser.GameMode gameMode;
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,55 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
         GameBlocksEngine gameBlocksEngine = new GameBlocksEngine(this, this.gameMode, this, this);
         gameGrid.setGravity(Gravity.CENTER);
         gameGrid.setAdapter(gameBlocksEngine);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Intent currentIntent = getIntent();
+
+        // Start Music
+        if (currentIntent != null) {
+            int musicPosition = currentIntent.getIntExtra("musicPosition", -1);
+
+            if (musicPosition == -1) {
+                this.startMusic();
+            } else {
+                this.startMusic(musicPosition);
+            }
+        } else {
+            this.startMusic();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (this.mediaPlayer != null) {
+            this.mediaPlayer.stop();
+            this.mediaPlayer.release();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (this.mediaPlayer != null) {
+            this.mediaPlayer.pause();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        int musicPosition = this.mediaPlayer.getCurrentPosition();
+
+        Intent currentIntent = getIntent();
+        currentIntent.putExtra("musicPosition", musicPosition);
+
+        super.onSaveInstanceState(outState);
     }
 
     /**
@@ -63,5 +114,50 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
         // Start End of Game Activity
         startActivity(intentForEndOfGame);
         finish();
+    }
+
+    /**
+     * Starts the correct music based on the game mode
+     */
+    private void startMusic() {
+        switch (this.gameMode) {
+            case EASY:
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.draft_punk);
+                break;
+            case MEDIUM:
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.only_you);
+                break;
+            case DIFFICULT:
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.leaving_my_girl);
+                break;
+        }
+
+        if (this.mediaPlayer != null) {
+            this.mediaPlayer.setLooping(true);
+            this.mediaPlayer.start();
+        }
+    }
+
+    /**
+     * Resumes the correct music based on the game mode
+     */
+    private void startMusic(int position) {
+        switch (this.gameMode) {
+            case EASY:
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.draft_punk);
+                break;
+            case MEDIUM:
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.only_you);
+                break;
+            case DIFFICULT:
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.leaving_my_girl);
+                break;
+        }
+
+        if (this.mediaPlayer != null) {
+            this.mediaPlayer.seekTo(position);
+            this.mediaPlayer.setLooping(true);
+            this.mediaPlayer.start();
+        }
     }
 }
