@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     tools:context=".screens.GridMatchingGame"
-    android:background="@color/white">
+    android:background="@color/black">
     <GridView
         android:id="@+id/blockGrid"
         android:layout_width="wrap_content"
