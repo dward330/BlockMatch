@@ -19,9 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import derrick.ward.blockmatch.R;
+import derrick.ward.blockmatch.models.Settings;
 import derrick.ward.blockmatch.screens.GameModeChooser;
 import derrick.ward.blockmatch.models.Block;
 import derrick.ward.blockmatch.services.GameActions;
+import derrick.ward.blockmatch.services.SettingsDBHelper;
 
 public class GameBlocksEngine extends BaseAdapter {
     private final String LOGTAG = "GameBlocksEngine";
@@ -116,6 +118,9 @@ public class GameBlocksEngine extends BaseAdapter {
         int dimensionNum = (int) Math.sqrt(numOfBlocks);
         gameGrid.setNumColumns(dimensionNum);
 
+        // Retrieve Game Settings
+        Settings gameSettings = new SettingsDBHelper(context).getSettings();
+
         for(int index = 0; index < numOfBlocks; index++) {
             this.totalBlocks++;
             int size = 180;
@@ -131,8 +136,25 @@ public class GameBlocksEngine extends BaseAdapter {
             // Generate Image Block
             ImageView blockImage = new ImageView(this.context);
             blockImage.setId(index);
-            Drawable giftBoxImage = this.context.getResources().getDrawable(R.drawable.gift_box);
-            blockImage.setImageDrawable(giftBoxImage);
+            Drawable blockCoverDrawable = null;
+
+            // Retrieve the correct block image cover
+            switch (gameSettings.blockCoverImage) {
+                case 0:
+                    blockCoverDrawable = this.context.getResources().getDrawable(R.drawable.gift_box);
+                break;
+                case 1:
+                    blockCoverDrawable = this.context.getResources().getDrawable(R.drawable.santa_claus);
+                break;
+                case 2:
+                    blockCoverDrawable = this.context.getResources().getDrawable(R.drawable.reindeer);
+                break;
+                case 3:
+                    blockCoverDrawable = this.context.getResources().getDrawable(R.drawable.elf);
+                break;
+            }
+
+            blockImage.setImageDrawable(blockCoverDrawable);
             LinearLayout.LayoutParams imageLayoutParams = new LinearLayout.LayoutParams(size,size);
             blockImage.setLayoutParams(imageLayoutParams);
             blockImage.setOnClickListener(new View.OnClickListener() {

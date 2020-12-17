@@ -2,11 +2,14 @@ package derrick.ward.blockmatch.screens;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import derrick.ward.blockmatch.models.Settings;
 import derrick.ward.blockmatch.screens.EndOfGame;
 import derrick.ward.blockmatch.screens.GameModeChooser;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.models.Block;
 import derrick.ward.blockmatch.services.GameActions;
+import derrick.ward.blockmatch.services.SettingsDBHelper;
 import derrick.ward.blockmatch.services.adapters.GameBlocksEngine;
 
 import android.content.Intent;
@@ -49,6 +52,14 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
         super.onResume();
 
         Intent currentIntent = getIntent();
+
+        // Get latest Game Settings
+        Settings gameSettings = new SettingsDBHelper(this).getSettings();
+
+        // Does the game settings specify not to play music
+        if (gameSettings.playMusic != 1) {
+            return;
+        }
 
         // Start Music
         if (currentIntent != null) {

@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import derrick.ward.blockmatch.R;
+import derrick.ward.blockmatch.models.Settings;
+import derrick.ward.blockmatch.services.SettingsDBHelper;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,10 +37,15 @@ public class EndOfGame extends AppCompatActivity {
         GameModeChooser.GameMode gameMode = (GameModeChooser.GameMode) intent.getSerializableExtra(String.valueOf(R.string.gameMode));
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        String pathToUserLeadershipBoardEntry = "LeadershipBoard/"+gameMode.name()+"/"+userId;
-        DatabaseReference userLeadershipBoardEntry = firebaseDatabase.getReference(pathToUserLeadershipBoardEntry);
-        userLeadershipBoardEntry.runTransaction(updateUserScoreOnLeaderShipBoard(userId, score, gameMode));
+        // Get latest Game Settings
+        Settings gameSettings = new SettingsDBHelper(this).getSettings();
+
+        if (gameSettings.publishScore == 1) {
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            String pathToUserLeadershipBoardEntry = "LeadershipBoard/" + gameMode.name() + "/" + userId;
+            DatabaseReference userLeadershipBoardEntry = firebaseDatabase.getReference(pathToUserLeadershipBoardEntry);
+            userLeadershipBoardEntry.runTransaction(updateUserScoreOnLeaderShipBoard(userId, score, gameMode));
+        }
 
         String message = "Congrats on finding all block matches!\n\nYour Score:"+" "+score;
 

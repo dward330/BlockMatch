@@ -13,23 +13,29 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 
-import com.squareup.picasso.Picasso;
-
 import androidx.fragment.app.Fragment;
+
+import java.util.List;
+
 import derrick.ward.blockmatch.R;
+import derrick.ward.blockmatch.services.SettingsDBHelper;
 
 public class Settings extends Fragment implements AdapterView.OnItemSelectedListener {
     private Context context;
     private ImageView blockCoverImage;
     private Spinner blockCoverChoices;
+    private SettingsDBHelper settingsDBHelper;
 
     public Settings(Context context) {
         this.context = context;
+        this.settingsDBHelper = new SettingsDBHelper(context);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View settingsView = inflater.inflate(R.layout.settings, container, false);
+
+        derrick.ward.blockmatch.models.Settings gameSettings = this.settingsDBHelper.getSettings();
 
         // Register UI Elements
         this.blockCoverImage = settingsView.findViewById(R.id.blockCover);
@@ -38,7 +44,14 @@ public class Settings extends Fragment implements AdapterView.OnItemSelectedList
         musicSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                //Fetch Latest Settings
+                derrick.ward.blockmatch.models.Settings latestGameSettings = settingsDBHelper.getSettings();
 
+                // Update Settings
+                latestGameSettings.playMusic = isChecked ? 1 : 0;
+
+                // Save Latest Settings Changes
+                settingsDBHelper.updateSettings(latestGameSettings.id, context, latestGameSettings);
             }
         });
 
@@ -46,7 +59,14 @@ public class Settings extends Fragment implements AdapterView.OnItemSelectedList
         publishScoreSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                //Fetch Latest Settings
+                derrick.ward.blockmatch.models.Settings latestGameSettings = settingsDBHelper.getSettings();
 
+                // Update Settings
+                latestGameSettings.publishScore = isChecked ? 1 : 0;
+
+                // Save Latest Settings Changes
+                settingsDBHelper.updateSettings(latestGameSettings.id, context, latestGameSettings);
             }
         });
 
@@ -55,6 +75,23 @@ public class Settings extends Fragment implements AdapterView.OnItemSelectedList
         stringChoiceAdapter.setDropDownViewResource(R.layout.spinner_item);
         blockCoverChoices.setAdapter(stringChoiceAdapter);
         blockCoverChoices.setOnItemSelectedListener(this);
+
+        // Apply the current settings to music switch
+        if (gameSettings.playMusic == 1) {
+            musicSwitch.setChecked(true);
+        } else {
+            musicSwitch.setChecked(false);
+        }
+
+        // Apply the current settings to publish score switch
+        if (gameSettings.publishScore == 1) {
+            publishScoreSwitch.setChecked(true);
+        } else {
+            publishScoreSwitch.setChecked(false);
+        }
+
+        // Apply the current settings to block cover image
+        blockCoverChoices.setSelection(gameSettings.blockCoverImage, true);
 
         return settingsView;
     }
@@ -89,8 +126,15 @@ public class Settings extends Fragment implements AdapterView.OnItemSelectedList
                 break;
         }
 
-        // Save cover choice information to Db
+        // Save block cover choice information to Db
+        //Fetch Latest Settings
+        derrick.ward.blockmatch.models.Settings latestGameSettings = settingsDBHelper.getSettings();
 
+        // Update Settings
+        latestGameSettings.blockCoverImage = pos;
+
+        // Save Latest Settings Changes
+        settingsDBHelper.updateSettings(latestGameSettings.id, context, latestGameSettings);
     }
 
     /**
