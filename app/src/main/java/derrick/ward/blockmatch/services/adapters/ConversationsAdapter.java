@@ -1,5 +1,6 @@
 package derrick.ward.blockmatch.services.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -159,38 +160,54 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
             case R.id.deleteConversation:
 
                 // Dialog Asking if user is sure they want to delete conversation
+                AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+                builder.setTitle("Are you sure?");
+                builder.setMessage("Delete Conversation?");
+                builder.setPositiveButton("Yes", (dialog, which) -> {
+                    // Delete Conversation
+                    String signInUserId = FirebaseAuth.getInstance().getCurrentUser().getUid().trim();
+                    String messageRecipientId = currentConversationSelected.recipientId.trim();
 
-                // Delete Conversation
-                String signInUserId = FirebaseAuth.getInstance().getCurrentUser().getUid().trim();
-                String messageRecipientId = currentConversationSelected.recipientId.trim();
+                    DatabaseReference conversationGroupDBRef = FirebaseDatabase.getInstance().getReference("ConversationsGroups");
+                    DatabaseReference signedInUserConvoWithRecipient = conversationGroupDBRef.child(signInUserId).child(messageRecipientId);
+                    signedInUserConvoWithRecipient.runTransaction(deleteConversationTransactionHandler(conversationGroupDBRef));
+                });
+                builder.setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss();
+                });
+                builder.create().show();
 
-                DatabaseReference conversationGroupDBRef = FirebaseDatabase.getInstance().getReference("ConversationsGroups");
-                DatabaseReference signedInUserConvoWithRecipient = conversationGroupDBRef.child(signInUserId).child(messageRecipientId);
-                signedInUserConvoWithRecipient.runTransaction(new Transaction.Handler() {
-                    @NonNull
-                    @Override
-                    public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                        /*
-                        HashMap<String, Object> currentConversations = (HashMap<String, Object>) currentData.getValue();
+                return true;
+            default:
+                return false;
+        }
+    }
 
-                        if (currentConversations != null) {
-                            currentConversations.remove(messageRecipientId);
-                            currentData.setValue(currentConversations);
-                        }*/
+    /**
+     * Transaction Handler to delete conversation between signed in user and message recipient
+     * @param conversationGroupDBRef
+     * @return
+     */
+    private Transaction.Handler deleteConversationTransactionHandler(DatabaseReference conversationGroupDBRef) {
+        return new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
 
-                        currentData.setValue(null);
+                currentData.setValue(null);
 
-                        return Transaction.success(currentData);
-                    }
+                return Transaction.success(currentData);
+            }
 
-                    @Override
-                    public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                        if (error == null) {
-                            DatabaseReference recipientConvoWithSignedInUser = conversationGroupDBRef.child(currentConversationSelected.recipientId).child(signInUserId);
-                            recipientConvoWithSignedInUser.runTransaction(new Transaction.Handler() {
-                                @NonNull
-                                @Override
-                                public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                if (error == null) {
+                    String signInUserId = FirebaseAuth.getInstance().getCurrentUser().getUid().trim();
+                    DatabaseReference recipientConvoWithSignedInUser = conversationGroupDBRef.child(currentConversationSelected.recipientId).child(signInUserId);
+                    recipientConvoWithSignedInUser.runTransaction(new Transaction.Handler() {
+                        @NonNull
+                        @Override
+                        public Transaction.Result doTransaction(@NonNull MutableData currentData) {
                                     /*
                                     HashMap<String, Object> currentConversations = (HashMap<String, Object>) currentData.getValue();
 
@@ -199,51 +216,46 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
                                         currentData.setValue(currentConversations);
                                     }*/
 
-                                    currentData.setValue(null);
+                            currentData.setValue(null);
 
-                                    return Transaction.success(currentData);
-                                }
-
-                                @Override
-                                public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                                    if (error == null) {
-                                        String signInUserId = FirebaseAuth.getInstance().getCurrentUser().getUid().trim();
-                                        String messageRecipientId = currentConversationSelected.recipientId.trim();
-                                        String conversationChatMessagesPrimaryKey = null;
-                                        int uidComparison = signInUserId.toUpperCase().compareTo(messageRecipientId.toUpperCase());
-
-                                        if (uidComparison > 0) {
-                                            conversationChatMessagesPrimaryKey = messageRecipientId.trim()+"-"+signInUserId.trim();
-                                        } else if (uidComparison < 0) {
-                                            conversationChatMessagesPrimaryKey = signInUserId.trim()+"-"+messageRecipientId.trim();
-                                        }
-                                        DatabaseReference conversationChatMessageDBRef = FirebaseDatabase.getInstance().getReference("ConversationChatMessages");
-                                        DatabaseReference currentConversationToDelete = conversationChatMessageDBRef.child(conversationChatMessagesPrimaryKey);
-                                        currentConversationToDelete.runTransaction(new Transaction.Handler() {
-                                            @NonNull
-                                            @Override
-                                            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                                                currentData.setValue(null);
-
-                                                return Transaction.success(currentData);
-                                            }
-
-                                            @Override
-                                            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-
-                                            }
-                                        });
-                                    }
-                                }
-                            });
+                            return Transaction.success(currentData);
                         }
-                    }
-                });
 
-                return true;
-            default:
-                return false;
-        }
+                        @Override
+                        public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                            if (error == null) {
+                                String signInUserId = FirebaseAuth.getInstance().getCurrentUser().getUid().trim();
+                                String messageRecipientId = currentConversationSelected.recipientId.trim();
+                                String conversationChatMessagesPrimaryKey = null;
+                                int uidComparison = signInUserId.toUpperCase().compareTo(messageRecipientId.toUpperCase());
+
+                                if (uidComparison > 0) {
+                                    conversationChatMessagesPrimaryKey = messageRecipientId.trim()+"-"+signInUserId.trim();
+                                } else if (uidComparison < 0) {
+                                    conversationChatMessagesPrimaryKey = signInUserId.trim()+"-"+messageRecipientId.trim();
+                                }
+                                DatabaseReference conversationChatMessageDBRef = FirebaseDatabase.getInstance().getReference("ConversationChatMessages");
+                                DatabaseReference currentConversationToDelete = conversationChatMessageDBRef.child(conversationChatMessagesPrimaryKey);
+                                currentConversationToDelete.runTransaction(new Transaction.Handler() {
+                                    @NonNull
+                                    @Override
+                                    public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                                        currentData.setValue(null);
+
+                                        return Transaction.success(currentData);
+                                    }
+
+                                    @Override
+                                    public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        };
     }
 
     /**
