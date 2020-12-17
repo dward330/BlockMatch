@@ -27,10 +27,6 @@
         <activity
             android:name=".screens.LandingScreen"
             android:theme="@style/NoTitle"></activity>
-        <activity
-            android:name=".screens.GameModeChooser"
-            android:theme="@style/NoTitle">
-        </activity>
         <activity android:name=".screens.GridMatchingGame"></activity>
         <activity android:name=".screens.EndOfGame"></activity>
         <activity

@@ -1,11 +1,9 @@
 package derrick.ward.blockmatch.screens;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import derrick.ward.blockmatch.models.Settings;
-import derrick.ward.blockmatch.screens.EndOfGame;
-import derrick.ward.blockmatch.screens.GameModeChooser;
+import derrick.ward.blockmatch.screens.fragments.GameModeChooser;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.models.Block;
 import derrick.ward.blockmatch.services.GameActions;
@@ -15,7 +13,6 @@ import derrick.ward.blockmatch.services.adapters.GameBlocksEngine;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.widget.GridView;
 
@@ -111,9 +108,16 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
      * Ends Game
      * @param score latest score the gamer has
      */
-    public void GameFinished(int score) {
+    public void gameFinished(int score) {
         this.score = score;
         this.proceedToEndOfGameScreen();
+    }
+
+    /**
+     * Empty to adhere to interface
+     */
+    public void startGame() {
+
     }
 
     /*

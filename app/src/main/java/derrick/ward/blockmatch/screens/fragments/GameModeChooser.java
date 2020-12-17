@@ -1,15 +1,21 @@
-package derrick.ward.blockmatch.screens;
+package derrick.ward.blockmatch.screens.fragments;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import derrick.ward.blockmatch.R;
+import derrick.ward.blockmatch.screens.GridMatchingGame;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-public class GameModeChooser extends AppCompatActivity {
+public class GameModeChooser extends Fragment {
     private final String LOGTAG = "BlockMatch";
+    private Context context;
     private GameMode gameMode = GameMode.EASY;
 
     public static enum GameMode {
@@ -18,11 +24,15 @@ public class GameModeChooser extends AppCompatActivity {
         DIFFICULT
     }
 
+    public GameModeChooser(Context context) {
+        this.context = context;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.game_mode_chooser);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View gameModeChooser = inflater.inflate(R.layout.game_mode_chooser, container, false);
+
+        return  gameModeChooser;
     }
 
     /*
@@ -49,7 +59,7 @@ public class GameModeChooser extends AppCompatActivity {
         }
 
         // Build Intent to Load Game
-        Intent intentToLoadGame = new Intent(this, GridMatchingGame.class);
+        Intent intentToLoadGame = new Intent(context, GridMatchingGame.class);
         intentToLoadGame.putExtra(String.valueOf(R.string.gameMode), this.gameMode);
 
         // Start Game Activity

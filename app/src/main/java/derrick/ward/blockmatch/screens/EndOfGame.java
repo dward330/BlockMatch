@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.models.Settings;
+import derrick.ward.blockmatch.screens.fragments.GameModeChooser;
 import derrick.ward.blockmatch.services.SettingsDBHelper;
 
 import android.content.Intent;

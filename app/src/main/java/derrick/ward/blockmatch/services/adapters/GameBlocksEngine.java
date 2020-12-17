@@ -20,7 +20,7 @@ import java.util.List;
 
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.models.Settings;
-import derrick.ward.blockmatch.screens.GameModeChooser;
+import derrick.ward.blockmatch.screens.fragments.GameModeChooser;
 import derrick.ward.blockmatch.models.Block;
 import derrick.ward.blockmatch.services.GameActions;
 import derrick.ward.blockmatch.services.SettingsDBHelper;
@@ -315,7 +315,7 @@ public class GameBlocksEngine extends BaseAdapter {
 
                 if (this.areAllGameBlocksUncovered()) {
                     // Proceed to Congrats Screen
-                    this.gameActions.GameFinished(score);
+                    this.gameActions.gameFinished(score);
                 } else {
                     // Reset Uncovered Locations
                     this.uncoveredBlock1Location = -1;

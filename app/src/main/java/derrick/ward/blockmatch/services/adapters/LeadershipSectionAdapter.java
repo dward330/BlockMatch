@@ -40,7 +40,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.models.LeadershipBoardEntry;
 import derrick.ward.blockmatch.screens.ChatConversation;
-import derrick.ward.blockmatch.screens.GameModeChooser;
+import derrick.ward.blockmatch.screens.fragments.GameModeChooser;
 
 /**
  * Leadership Section Adapter

@@ -8,24 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.android.material.tabs.TabLayout;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import derrick.ward.blockmatch.R;
-import derrick.ward.blockmatch.screens.GameModeChooser;
-import derrick.ward.blockmatch.screens.LandingScreen;
-import derrick.ward.blockmatch.screens.SplashScreen;
+import derrick.ward.blockmatch.services.GameActions;
 import derrick.ward.blockmatch.services.adapters.LeadershipSectionAdapter;
 
 public class LeadershipSection extends Fragment {
     private GameModeChooser.GameMode gameMode;
     private Context context;
+    private GameActions gameActions;
 
-    public LeadershipSection (Context context, GameModeChooser.GameMode gameMode) {
+    public LeadershipSection (Context context, GameModeChooser.GameMode gameMode, GameActions gameActions) {
         this.context = context;
         this.gameMode = gameMode;
+        this.gameActions = gameActions;
     }
 
     @Override
@@ -49,7 +47,7 @@ public class LeadershipSection extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity( new Intent(context, GameModeChooser.class));
+                gameActions.startGame();
             }
         });
 

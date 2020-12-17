@@ -32,10 +32,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.screens.fragments.AboutGameAuthor;
 import derrick.ward.blockmatch.screens.fragments.Conversations;
+import derrick.ward.blockmatch.screens.fragments.GameModeChooser;
 import derrick.ward.blockmatch.screens.fragments.LeadershipBoard;
 import derrick.ward.blockmatch.screens.fragments.Settings;
+import derrick.ward.blockmatch.services.GameActions;
 
-public class LandingScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class LandingScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GameActions {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private CircleImageView profilePhoto;
@@ -59,11 +61,10 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, new LeadershipBoard());
+        fragmentTransaction.replace(R.id.fragment_container, new LeadershipBoard(this));
         fragmentTransaction.commit();
     }
 
-    @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
 
         int menuId = menuItem.getItemId();
@@ -80,13 +81,16 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
                 this.drawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.playGameItem:
-                startActivity( new Intent(this, GameModeChooser.class));
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new GameModeChooser(this));
+                fragmentTransaction.commit();
                 this.drawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.leadershipBoardItem:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new LeadershipBoard());
+                fragmentTransaction.replace(R.id.fragment_container, new LeadershipBoard(this));
                 fragmentTransaction.commit();
                 this.drawerLayout.closeDrawer(GravityCompat.START);
                 break;
@@ -152,5 +156,22 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
 
             }
         });
+    }
+
+    @Override
+    public void gameFinished(int score) {
+
+    }
+
+    @Override
+    public void startGame() {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, new GameModeChooser(this));
+        fragmentTransaction.commit();
+        this.drawerLayout.closeDrawer(GravityCompat.START);
     }
 }

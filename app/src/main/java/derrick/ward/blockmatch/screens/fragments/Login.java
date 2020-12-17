@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseUser;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import derrick.ward.blockmatch.R;
-import derrick.ward.blockmatch.screens.GameModeChooser;
 import derrick.ward.blockmatch.screens.LandingScreen;
 import derrick.ward.blockmatch.screens.LoginSignUp;
 
