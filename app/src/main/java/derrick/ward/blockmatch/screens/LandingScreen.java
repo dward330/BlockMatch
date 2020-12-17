@@ -59,12 +59,82 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
 
         this.loadProfileInformation();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, new LeadershipBoard(this));
-        fragmentTransaction.commit();
+        Intent intent = getIntent();
+        if (intent != null) {
+            String screenToLoad = intent.getStringExtra("fragmentToLoad");
+
+            if (screenToLoad != null && !screenToLoad.isEmpty()) {
+                this.loadFragment(screenToLoad);
+            } else {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new LeadershipBoard(this));
+                fragmentTransaction.commit();
+            }
+
+        } else {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, new LeadershipBoard(this));
+            fragmentTransaction.commit();
+        }
     }
 
+    /**
+     * Loads Fragment based on screen name supplied
+     * @param screenName Name of the screen to load (as a Fragment)
+     */
+    public void loadFragment(String screenName) {
+        String screenNameCapitalized = screenName.toUpperCase();
+
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+
+        switch (screenNameCapitalized) {
+            case "ABOUTAUTHOR":
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new AboutGameAuthor());
+                fragmentTransaction.commit();
+                this.drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case "GAMEMODECHOOSER":
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new GameModeChooser(this));
+                fragmentTransaction.commit();
+                this.drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case "LEADERSHIPBOARD":
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new LeadershipBoard(this));
+                fragmentTransaction.commit();
+                this.drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case "CONVERSATIONS":
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new Conversations(FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                fragmentTransaction.commit();
+                this.drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case "SETTINGS":
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new Settings(this));
+                fragmentTransaction.commit();
+                this.drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            default:
+        }
+    }
+
+    /**
+     * Event Handler for when a menu item is chosen on the app drawer
+     * @param menuItem
+     * @return
+     */
     public boolean onNavigationItemSelected(MenuItem menuItem) {
 
         int menuId = menuItem.getItemId();

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 public class GameModeChooser extends Fragment {
     private final String LOGTAG = "BlockMatch";
@@ -31,6 +32,15 @@ public class GameModeChooser extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View gameModeChooser = inflater.inflate(R.layout.game_mode_chooser, container, false);
+
+        Button easyButton = gameModeChooser.findViewById(R.id.easyModeButton);
+        easyButton.setOnClickListener(this::setGameMode);
+
+        Button mediumButton = gameModeChooser.findViewById(R.id.mediumModeButton);
+        mediumButton.setOnClickListener(this::setGameMode);
+
+        Button difficultButton = gameModeChooser.findViewById(R.id.difficultModeButton);
+        difficultButton.setOnClickListener(this::setGameMode);
 
         return  gameModeChooser;
     }

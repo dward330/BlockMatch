@@ -94,15 +94,28 @@ public class EndOfGame extends AppCompatActivity {
      * Starts a new Game
      * */
     public void startNewGame(View view) {
-        // Build Intent to Load Game
-        Intent intentToNewGame = new Intent(this, GameModeChooser.class);
 
-        // Start New Game Activity
-        startActivity(intentToNewGame);
+        // Build Intent to See Game Chooser Fragment
+        Intent intentToGameChooserFragment = new Intent(this, LandingScreen.class);
+        intentToGameChooserFragment.putExtra("fragmentToLoad", "GameModeChooser");
+
+        // Start Leadership Board Activity
+        startActivity(intentToGameChooserFragment);
         finish();
     }
 
     public void seeLeadershipBoard(View view) {
+        // Build Intent to See Leadership Board
+        Intent intentToLeadershipBoard = new Intent(this, LandingScreen.class);
+        intentToLeadershipBoard.putExtra("fragmentToLoad", "leadershipBoard");
+
+        // Start Leadership Board Activity
+        startActivity(intentToLeadershipBoard);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
         // Build Intent to See Leadership Board
         Intent intentToLeadershipBoard = new Intent(this, LandingScreen.class);
 
