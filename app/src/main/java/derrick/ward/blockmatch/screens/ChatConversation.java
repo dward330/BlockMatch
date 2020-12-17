@@ -132,4 +132,15 @@ public class ChatConversation extends AppCompatActivity {
             }
         };
     }
+
+    @Override
+    public void onBackPressed() {
+        // Build Intent to Conversations Fragment
+        Intent intentToConversationsFragment = new Intent(this, LandingScreen.class);
+        intentToConversationsFragment.putExtra("fragmentToLoad", "conversations");
+
+        // Go to Conversations
+        startActivity(intentToConversationsFragment);
+        finish();
+    }
 }

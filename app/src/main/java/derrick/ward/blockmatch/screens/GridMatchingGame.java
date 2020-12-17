@@ -178,4 +178,15 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
             this.mediaPlayer.start();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        // Build Intent to See Game Chooser Fragment
+        Intent intentToGameChooserFragment = new Intent(this, LandingScreen.class);
+        intentToGameChooserFragment.putExtra("fragmentToLoad", "GameModeChooser");
+
+        // Go to Game Mode Chooser
+        startActivity(intentToGameChooserFragment);
+        finish();
+    }
 }

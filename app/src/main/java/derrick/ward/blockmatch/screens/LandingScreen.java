@@ -43,6 +43,7 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
     private CircleImageView profilePhoto;
     private TextView profileDisplayName;
     private TextView profileEmail;
+    private String currentActiveScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,17 +67,11 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
             if (screenToLoad != null && !screenToLoad.isEmpty()) {
                 this.loadFragment(screenToLoad);
             } else {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new LeadershipBoard(this));
-                fragmentTransaction.commit();
+                this.loadFragment("leadershipBoard");
             }
 
         } else {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, new LeadershipBoard(this));
-            fragmentTransaction.commit();
+            this.loadFragment("leadershipBoard");
         }
     }
 
@@ -128,6 +123,8 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
                 break;
             default:
         }
+
+        this.currentActiveScreen = screenName;
     }
 
     /**
@@ -139,44 +136,21 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
 
         int menuId = menuItem.getItemId();
 
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-
         switch (menuId) {
             case R.id.aboutAuthorItem:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new AboutGameAuthor());
-                fragmentTransaction.commit();
-                this.drawerLayout.closeDrawer(GravityCompat.START);
+                this.loadFragment("aboutAuthor");
                 break;
             case R.id.playGameItem:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new GameModeChooser(this));
-                fragmentTransaction.commit();
-                this.drawerLayout.closeDrawer(GravityCompat.START);
+                this.loadFragment("gameModeChooser");
                 break;
             case R.id.leadershipBoardItem:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new LeadershipBoard(this));
-                fragmentTransaction.commit();
-                this.drawerLayout.closeDrawer(GravityCompat.START);
+                this.loadFragment("leadershipBoard");
                 break;
             case R.id.messagesItem:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new Conversations(FirebaseAuth.getInstance().getCurrentUser().getUid()));
-                fragmentTransaction.commit();
-                this.drawerLayout.closeDrawer(GravityCompat.START);
+                this.loadFragment("conversations");
                 break;
             case R.id.settingsItem:
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new Settings(this));
-                fragmentTransaction.commit();
-                this.drawerLayout.closeDrawer(GravityCompat.START);
+                this.loadFragment("settings");
                 break;
             default:
         }
@@ -243,5 +217,29 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
         fragmentTransaction.replace(R.id.fragment_container, new GameModeChooser(this));
         fragmentTransaction.commit();
         this.drawerLayout.closeDrawer(GravityCompat.START);
+
+        this.currentActiveScreen = "gameModeChooser";
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (this.currentActiveScreen == null || this.currentActiveScreen.isEmpty()) {
+            this.finishAffinity();
+        }
+
+        String currentAcitveScreenCapitalized = this.currentActiveScreen.toUpperCase();
+
+        switch (currentAcitveScreenCapitalized) {
+            case "ABOUTAUTHOR":
+            case "GAMEMODECHOOSER":
+            case "CONVERSATIONS":
+            case "SETTINGS":
+                this.loadFragment("leadershipBoard");
+                break;
+            case "LEADERSHIPBOARD":
+                this.finishAffinity();
+                break;
+        }
     }
 }
