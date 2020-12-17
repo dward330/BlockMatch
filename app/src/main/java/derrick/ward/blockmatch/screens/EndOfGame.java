@@ -99,7 +99,7 @@ public class EndOfGame extends AppCompatActivity {
         Intent intentToGameChooserFragment = new Intent(this, LandingScreen.class);
         intentToGameChooserFragment.putExtra("fragmentToLoad", "GameModeChooser");
 
-        // Start Leadership Board Activity
+        // Go to Game Mode Chooser
         startActivity(intentToGameChooserFragment);
         finish();
     }
@@ -116,11 +116,12 @@ public class EndOfGame extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Build Intent to See Leadership Board
-        Intent intentToLeadershipBoard = new Intent(this, LandingScreen.class);
+        // Build Intent to See Game Chooser Fragment
+        Intent intentToGameChooserFragment = new Intent(this, LandingScreen.class);
+        intentToGameChooserFragment.putExtra("fragmentToLoad", "GameModeChooser");
 
-        // Start Leadership Board Activity
-        startActivity(intentToLeadershipBoard);
+        // Go to Game Mode Chooser
+        startActivity(intentToGameChooserFragment);
         finish();
     }
 }
