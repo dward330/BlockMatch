@@ -85,10 +85,13 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
 
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
-        int musicPosition = this.mediaPlayer.getCurrentPosition();
 
-        Intent currentIntent = getIntent();
-        currentIntent.putExtra("musicPosition", musicPosition);
+        if (this.mediaPlayer != null) {
+            int musicPosition = this.mediaPlayer.getCurrentPosition();
+
+            Intent currentIntent = getIntent();
+            currentIntent.putExtra("musicPosition", musicPosition);
+        }
 
         super.onSaveInstanceState(outState);
     }
