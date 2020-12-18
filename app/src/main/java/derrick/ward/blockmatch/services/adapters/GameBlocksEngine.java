@@ -26,7 +26,7 @@ import derrick.ward.blockmatch.services.GameActions;
 import derrick.ward.blockmatch.services.SettingsDBHelper;
 
 public class GameBlocksEngine extends BaseAdapter {
-    private final String LOGTAG = "GameBlocksEngine";
+    // private final String LOGTAG = "GameBlocksEngine";
     private GameModeChooser.GameMode gameMode;
     private GridView gameGrid;
     private int uncoveredBlock1Location = -1;
@@ -165,7 +165,7 @@ public class GameBlocksEngine extends BaseAdapter {
                         return;
                     }
 
-                    Log.d(LOGTAG, "block "+view.getId()+"clicked");
+                    // Log.d(LOGTAG, "block "+view.getId()+"clicked");
 
                     // Find Game Block to Unhide
                     Block gameBlock = gameBlocks.get(new Integer(view.getId()));
@@ -225,7 +225,7 @@ public class GameBlocksEngine extends BaseAdapter {
             // Add Block to Collection of Game Blocks
             this.gameBlocks.put(new Integer(index), gameBlock);
 
-            Log.d(LOGTAG, "Added Block Number "+(index+1)+" to the Game Grid");
+            // Log.d(LOGTAG, "Added Block Number "+(index+1)+" to the Game Grid");
         }
     }
 

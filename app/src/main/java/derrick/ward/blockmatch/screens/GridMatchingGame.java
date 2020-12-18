@@ -19,7 +19,7 @@ import android.widget.GridView;
 import java.util.ArrayList;
 
 public class GridMatchingGame extends AppCompatActivity implements GameActions {
-    private final String LOGTAG = "BlockMatch";
+    // private final String LOGTAG = "BlockMatch";
     private int uncoveredBlock1Location = -1;
     private int uncoveredBlock2Location = -1;
     private int score = 0;

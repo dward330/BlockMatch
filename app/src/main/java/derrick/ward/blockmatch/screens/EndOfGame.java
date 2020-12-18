@@ -24,7 +24,7 @@ import com.google.firebase.database.Transaction;
 import java.util.HashMap;
 
 public class EndOfGame extends AppCompatActivity {
-    private final String LOGTAG = "BlockMatch";
+    // private final String LOGTAG = "BlockMatch";
     private GameModeChooser.GameMode gameMode = GameModeChooser.GameMode.EASY;
 
 
