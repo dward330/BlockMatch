@@ -39,15 +39,15 @@
                 android:orientation="horizontal"
                 android:layout_weight="1">
                 <TextView
-                    android:id="@+id/convoUserUID"
+                    android:id="@+id/convoDisplayName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:textStyle="bold"
-                    android:textColor="@color/red_pink"
                     android:layout_marginStart="5dp"
-                    android:textSize="15dp"/>
+                    android:textSize="15dp"
+                    android:textColor="@color/red_pink"/>
                 <ImageView
                     android:id="@+id/convoOptions"
                     android:layout_width="20dp"
@@ -59,16 +59,6 @@
                     android:layout_marginRight="10dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
             <TextView
-                android:id="@+id/convoDisplayName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:textStyle="bold"
-                android:layout_marginStart="5dp"
-                android:textSize="15dp"
-                android:textColor="@color/black"/>
-            <TextView
                 android:id="@+id/convoEmail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -77,7 +67,18 @@
                 android:textStyle="bold"
                 android:layout_marginStart="5dp"
                 android:textSize="15dp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/red_pink"/>
+            <TextView
+                android:id="@+id/convoUserUID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textStyle="bold"
+                android:textColor="@color/red_pink"
+                android:layout_marginStart="5dp"
+                android:textSize="15dp"
+                android:visibility="invisible"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

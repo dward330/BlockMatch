@@ -43,7 +43,7 @@
                     android:orientation="horizontal"
                     android:layout_weight="1">
                     <TextView
-                        android:id="@+id/userUID"
+                        android:id="@+id/userDisplayName"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -63,16 +63,6 @@
                         android:layout_marginRight="10dp"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <TextView
-                    android:id="@+id/userDisplayName"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textStyle="bold"
-                    android:textColor="@color/red_pink"
-                    android:layout_marginStart="5dp"
-                    android:textSize="15dp"/>
-                <TextView
                     android:id="@+id/userScore"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -82,6 +72,17 @@
                     android:layout_marginStart="5dp"
                     android:textSize="15dp"
                     android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/userUID"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textStyle="bold"
+                    android:textColor="@color/red_pink"
+                    android:layout_marginStart="5dp"
+                    android:textSize="15dp"
+                    android:visibility="invisible"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

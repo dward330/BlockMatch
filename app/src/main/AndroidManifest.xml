@@ -17,21 +17,35 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".screens.SplashScreen"
-            android:theme="@style/NoTitle">
+            android:theme="@style/NoTitle"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screens.LoginSignUp"></activity>
+        <activity
+            android:name=".screens.LoginSignUp"
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".screens.LandingScreen"
-            android:theme="@style/NoTitle"></activity>
-        <activity android:name=".screens.GridMatchingGame"></activity>
-        <activity android:name=".screens.EndOfGame"></activity>
+            android:theme="@style/NoTitle"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".screens.GridMatchingGame"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".screens.EndOfGame"
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".screens.ChatConversation"
-            android:theme="@style/NoTitle"></activity>
+            android:theme="@style/NoTitle"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
