@@ -140,13 +140,13 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
     private void startMusic() {
         switch (this.gameMode) {
             case EASY:
-                this.mediaPlayer = MediaPlayer.create(this, R.raw.draft_punk);
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.oniku);
                 break;
             case MEDIUM:
-                this.mediaPlayer = MediaPlayer.create(this, R.raw.only_you);
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.motivated);
                 break;
             case DIFFICULT:
-                this.mediaPlayer = MediaPlayer.create(this, R.raw.leaving_my_girl);
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.lounge1);
                 break;
         }
 
@@ -162,13 +162,13 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
     private void startMusic(int position) {
         switch (this.gameMode) {
             case EASY:
-                this.mediaPlayer = MediaPlayer.create(this, R.raw.draft_punk);
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.oniku);
                 break;
             case MEDIUM:
-                this.mediaPlayer = MediaPlayer.create(this, R.raw.only_you);
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.motivated);
                 break;
             case DIFFICULT:
-                this.mediaPlayer = MediaPlayer.create(this, R.raw.leaving_my_girl);
+                this.mediaPlayer = MediaPlayer.create(this, R.raw.lounge1);
                 break;
         }
 
