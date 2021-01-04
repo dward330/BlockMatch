@@ -321,7 +321,7 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
                     });
 
                     LeadershipSectionAdapter.this.notifyDataSetChanged(); // Trigger adapter to reprocess all entries in leadership board
-                    LeadershipSectionAdapter.this.recyclerView.scrollToPosition(leadershipSectionEntries.size()-1); // Tell adapter to scroll down to the last entry
+                    LeadershipSectionAdapter.this.recyclerView.scrollToPosition(0); // Tell adapter to scroll up to the player in first place
                 }
             }
 
