@@ -13,4 +13,6 @@
     <string name="navMenuSettings">Edit Preferences</string>
     <string name="gameAuthorBio">My name is Derrick Kyle Ward. I am a Computer Engineer (BS, Working on MS). I am West Indian and my family hails from the countries of Barbados and St. Vincent. I currently work as a Software Engineer. I enjoy reading autobiographies, science-fiction, cyperpunk, and historical non-fiction. My favorites sports to play are ping pong and basketball. I hope you enjoy the game. Its my first published one. I will be continue to iterate and improve.</string>
     <string name="chatMessagesTitle">Current Conversations</string>
+    <string name="cameraRequestBlocked">Block Match needs access to camera in order for you to take a profile photo. Please update Block Match\'s permissions from phone settings.</string>
+    <string name="readStorageRequestBlocked">Block Match needs access to your storage in order for you to select a profile photo from your existing photos. Please update Block Match\'s permissions from phone settings.</string>
 </resources>
