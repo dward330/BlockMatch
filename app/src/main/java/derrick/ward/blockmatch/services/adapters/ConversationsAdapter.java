@@ -93,7 +93,6 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
 
                 if (latestUserProfileInfo != null) {
                     holder.userDisplayName.setText((String)latestUserProfileInfo.get("displayName"));
-                    holder.userEmail.setText((String)latestUserProfileInfo.get("email"));
                     String profilePhotoLocation = (String)latestUserProfileInfo.get("profilePhoto");
 
                     // Download User Profile Image Image
@@ -345,7 +344,6 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
         public ImageView convoOptions;
         public TextView userUID;
         public TextView userDisplayName;
-        public TextView userEmail;
         public CardView conversationContainer;
 
         public DatabaseReference userDBRef; // Holds a reference to a specific user in the users database table
@@ -358,7 +356,6 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
             // Bind Layout UI Elements to properties in View Holder Instance
             this.userUID = v.findViewById(R.id.convoUserUID);
             this.userDisplayName = v.findViewById(R.id.convoDisplayName);
-            this.userEmail = v.findViewById(R.id.convoEmail);
             this.userProfilePhoto = v.findViewById(R.id.convoUserProfilePhoto);
             this.convoOptions = v.findViewById(R.id.convoOptions);
             this.conversationContainer = v.findViewById(R.id.conversation_item_container);
