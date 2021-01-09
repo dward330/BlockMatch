@@ -41,6 +41,7 @@ import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.models.LeadershipBoardEntry;
 import derrick.ward.blockmatch.screens.ChatConversation;
 import derrick.ward.blockmatch.screens.fragments.GameModeChooser;
+import derrick.ward.blockmatch.services.SubscriptOrdinals;
 
 /**
  * Leadership Section Adapter
@@ -51,6 +52,7 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
     private RecyclerView recyclerView;
     private GameModeChooser.GameMode gameMode;
     private LeadershipBoardEntry currentLeaderSelected;
+    private SubscriptOrdinals subscriptOrdinals = new SubscriptOrdinals();
 
     public LeadershipSectionAdapter(RecyclerView recyclerView, GameModeChooser.GameMode gameMode) {
         this.recyclerView = recyclerView;
@@ -85,6 +87,7 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
             holder.userDBRef.removeEventListener(holder.userValueEventListener);
         }
 
+        holder.placeNumber.setText((position + 1) + this.subscriptOrdinals.getSubscriptOrdinal(position+1));
         holder.userUID.setText(entry.id);
         holder.userScore.setText("Score: " + entry.score);
 
@@ -201,29 +204,11 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
             @Override
             public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                 if (error == null) {
-
                     // Generate New Reversed Conversation
                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                     DatabaseReference conversationsDBRef = firebaseDatabase.getReference("ConversationsGroups");
                     DatabaseReference recipientUserConversations = conversationsDBRef.child(messageRecipient);
                     recipientUserConversations.runTransaction(createNewReversedCopiedConversationTransactionHandler(signedInUser, messageRecipient));
-
-                    /*
-                    int uidComparison = signInUserId.toUpperCase().trim().compareTo(currentLeaderSelected.id.toUpperCase().trim());
-
-                    // Generate New Conversation
-                    FirebaseUser signedInUser = FirebaseAuth.getInstance().getCurrentUser();
-                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                    DatabaseReference conversationsDBRef = firebaseDatabase.getReference("ConversationsChatMessages");
-
-                    if (uidComparison > 0) {
-                        DatabaseReference chatMessagesInConversation = conversationsDBRef.child(currentSelectLeaderId.trim()+"-"+signInUserId.trim());
-                        chatMessagesInConversation.runTransaction(createNewConversationChatMessagesEntryTransactionHandler());
-                    } else if (uidComparison < 0) {
-                        DatabaseReference chatMessagesInConversation = conversationsDBRef.child(signInUserId.trim()+"-"+currentSelectLeaderId.trim());
-                        chatMessagesInConversation.runTransaction(createNewConversationChatMessagesEntryTransactionHandler());
-                    }
-                    */
                 }
             }
         };
@@ -368,6 +353,7 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
     public static class LeaderShipSectionItemViewHolder extends RecyclerView.ViewHolder{
         public ImageView userProfilePhoto;
         public ImageView entryOptions;
+        public TextView placeNumber;
         public TextView userUID;
         public TextView userDisplayName;
         public TextView userScore;
@@ -380,6 +366,7 @@ public class LeadershipSectionAdapter extends RecyclerView.Adapter<LeadershipSec
             super(v);
 
             // Bind Layout UI Elements to properties in View Holder Instance
+            this.placeNumber = v.findViewById(R.id.placeNumber);
             this.userUID = v.findViewById(R.id.userUID);
             this.userDisplayName = v.findViewById(R.id.userDisplayName);
             this.userScore = v.findViewById(R.id.userScore);

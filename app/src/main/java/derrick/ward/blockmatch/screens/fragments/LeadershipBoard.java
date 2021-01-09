@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.services.GameActions;
-import derrick.ward.blockmatch.services.LeadershipBoardPager;
+import derrick.ward.blockmatch.services.adapters.LeadershipBoardPager;
 
 public class LeadershipBoard extends Fragment {
     private GameActions gameActions;
