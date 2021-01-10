@@ -62,12 +62,6 @@
     </LinearLayout>
     <Button
         style="@style/loginSignUpButtons"
-        android:id="@+id/loginResetPassword"
-        android:layout_width="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/login"
-        android:text="@string/resetPassword"/>
-    <Button
-        style="@style/loginSignUpButtons"
         android:id="@+id/login"
         android:layout_width="match_parent"
         app:layout_constraintBottom_toTopOf="@id/loginSignUp"
@@ -76,8 +70,14 @@
         style="@style/loginSignUpButtons"
         android:id="@+id/loginSignUp"
         android:layout_width="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/resendEmailVerification"
+        app:layout_constraintBottom_toTopOf="@id/loginResetPassword"
         android:text="@string/signUp"/>
+    <Button
+        style="@style/loginSignUpButtons"
+        android:id="@+id/loginResetPassword"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toTopOf="@id/resendEmailVerification"
+        android:text="@string/resetPassword"/>
     <Button
         style="@style/loginSignUpButtons"
         android:id="@+id/resendEmailVerification"
