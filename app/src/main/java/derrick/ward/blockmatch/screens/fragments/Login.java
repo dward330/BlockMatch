@@ -32,6 +32,10 @@ public class Login extends Fragment {
     private EditText email;
     private EditText password;
 
+    public Login() {
+
+    }
+
     public Login (Context context) {
         this.context = context;
     }

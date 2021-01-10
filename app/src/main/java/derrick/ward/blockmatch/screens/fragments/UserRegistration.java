@@ -94,11 +94,11 @@ public class UserRegistration extends Fragment implements PopupMenu.OnMenuItemCl
                 if (isFormValid()) {
                     User user = new User();
                     user.email = emailAddress.getText().toString().trim();
-                    user.password = password.getText().toString().trim();
+                    String passwordEntered = password.getText().toString().trim();
                     user.displayName = displayName.getText().toString().trim();
 
                     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                    firebaseAuth.createUserWithEmailAndPassword(user.email, user.password)
+                    firebaseAuth.createUserWithEmailAndPassword(user.email, passwordEntered)
                                 .addOnSuccessListener((Activity) context, newUserRegistrationSuccessListener(user))
                                 .addOnFailureListener((Activity) context, new OnFailureListener() {
                                     @Override
