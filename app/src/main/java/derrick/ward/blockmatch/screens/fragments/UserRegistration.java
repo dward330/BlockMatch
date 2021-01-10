@@ -9,19 +9,24 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,6 +67,7 @@ public class UserRegistration extends Fragment implements PopupMenu.OnMenuItemCl
     private EditText emailAddress;
     private EditText password;
     private EditText displayName;
+    private Button signUpButton;
 
     public UserRegistration (Context context) {
         this.context = context;
@@ -74,11 +80,45 @@ public class UserRegistration extends Fragment implements PopupMenu.OnMenuItemCl
         // Register UI Elements
         profilePhoto = loginFragment.findViewById(R.id.signUpProfilePhoto);
         profilePhoto.setOnClickListener(registerLaunchProfilePhotoMenuHandler());
-        emailAddress = loginFragment.findViewById(R.id.signUpEmail);
-        password = loginFragment.findViewById(R.id.signUpPassword);
-        displayName = loginFragment.findViewById(R.id.signUpDisplayName);
-        Button signUpButton = loginFragment.findViewById(R.id.signUp);
+        signUpButton = loginFragment.findViewById(R.id.signUp);
         signUpButton.setOnClickListener(registerCreateUserEventHandler());
+
+        emailAddress = loginFragment.findViewById(R.id.signUpEmail);
+        emailAddress.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    password.requestFocus();
+                }
+                return handled;
+            }
+        });
+
+        displayName = loginFragment.findViewById(R.id.signUpDisplayName);
+        displayName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    signUpButton.setFocusableInTouchMode(true);
+                    signUpButton.requestFocus();
+                }
+                return handled;
+            }
+        });
+
+        password = loginFragment.findViewById(R.id.signUpPassword);
+        password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    displayName.requestFocus();
+                }
+                return handled;
+            }
+        });
 
         return loginFragment;
     }
