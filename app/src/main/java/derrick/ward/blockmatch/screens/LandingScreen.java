@@ -33,6 +33,7 @@ import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.screens.fragments.AboutGameAuthor;
 import derrick.ward.blockmatch.screens.fragments.Conversations;
 import derrick.ward.blockmatch.screens.fragments.GameModeChooser;
+import derrick.ward.blockmatch.screens.fragments.HowTo;
 import derrick.ward.blockmatch.screens.fragments.LeadershipBoard;
 import derrick.ward.blockmatch.screens.fragments.Settings;
 import derrick.ward.blockmatch.services.GameActions;
@@ -86,6 +87,13 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
         FragmentTransaction fragmentTransaction;
 
         switch (screenNameCapitalized) {
+            case "HOWTO":
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new HowTo());
+                fragmentTransaction.commit();
+                this.drawerLayout.closeDrawer(GravityCompat.START);
+                break;
             case "ABOUTAUTHOR":
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -137,6 +145,9 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
         int menuId = menuItem.getItemId();
 
         switch (menuId) {
+            case R.id.howTo:
+                this.loadFragment("howTo");
+                break;
             case R.id.aboutAuthorItem:
                 this.loadFragment("aboutAuthor");
                 break;
@@ -231,6 +242,7 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
         String currentAcitveScreenCapitalized = this.currentActiveScreen.toUpperCase();
 
         switch (currentAcitveScreenCapitalized) {
+            case "HOWTO":
             case "ABOUTAUTHOR":
             case "GAMEMODECHOOSER":
             case "CONVERSATIONS":

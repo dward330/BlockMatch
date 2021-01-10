@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/howTo"
+            android:title="@string/navMenuHowTo"
+            android:icon="@drawable/instructions"
+            />
+        <item
             android:id="@+id/aboutAuthorItem"
             android:title="@string/navMenuAboutAuthor"
             android:icon="@drawable/about_author"

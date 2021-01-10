@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="howToPlayTitle">How to Play</string>
+    <string name="howToPlayExplanation">Choose between three game modes - Easy, Medium, Difficult. Click icons on the game board to uncover matching pairs until all pairs are found. The objective is to complete the game board with the fewest numbers of clicks and within the shortest amount of time.</string>
+    <string name="howToLeadershipBoardRankingsTitle">Leadership Board Rankings</string>
+    <string name="howToLeadershipBoardRankingsTitleExplanation">For each game mode played, the number of icon clicks are recorded and the time taken to complete the game board is also recorded. The player with the lowest number of clicks will rank higher. If there is a tie, the player who finishes the game board within the shortest amount of time wins.For each game mode played, the number of icon clicks are recorded and the time taken to complete the game board is also recorded. The player with the lowest number of clicks will rank higher. If there is a tie, the player who finishes the game board within the shortest amount of time wins.</string>
+</resources>
