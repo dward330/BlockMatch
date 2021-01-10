@@ -15,4 +15,5 @@
     <string name="chatMessagesTitle">Current Conversations</string>
     <string name="cameraRequestBlocked">Block Match needs access to camera in order for you to take a profile photo. Please update Block Match\'s permissions from phone settings.</string>
     <string name="readStorageRequestBlocked">Block Match needs access to your storage in order for you to select a profile photo from your existing photos. Please update Block Match\'s permissions from phone settings.</string>
+    <string name="onGoingGameHeader">Find the Matching Pairs</string>
 </resources>
