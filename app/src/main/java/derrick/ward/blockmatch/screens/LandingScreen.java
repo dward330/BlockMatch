@@ -1,5 +1,6 @@
 package derrick.ward.blockmatch.screens;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import derrick.ward.blockmatch.screens.fragments.Conversations;
 import derrick.ward.blockmatch.screens.fragments.GameModeChooser;
 import derrick.ward.blockmatch.screens.fragments.HowTo;
 import derrick.ward.blockmatch.screens.fragments.LeadershipBoard;
+import derrick.ward.blockmatch.screens.fragments.Login;
 import derrick.ward.blockmatch.screens.fragments.Settings;
 import derrick.ward.blockmatch.services.GameActions;
 
@@ -164,6 +166,8 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
             case R.id.settingsItem:
                 this.loadFragment("settings");
                 break;
+            case R.id.logOutItem:
+                this.logUserOut();
             default:
         }
 
@@ -259,5 +263,15 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
                 this.finishAffinity();
                 break;
         }
+    }
+
+    /**
+     * Logs user out of the game
+     */
+    private void logUserOut() {
+        FirebaseAuth.getInstance().signOut();
+
+        startActivity(new Intent(this, LoginSignUp.class));
+        this.finish();
     }
 }

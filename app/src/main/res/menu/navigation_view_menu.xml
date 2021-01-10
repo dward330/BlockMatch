@@ -31,5 +31,10 @@
             android:title="@string/navMenuSettings"
             android:icon="@drawable/settings"
             />
+        <item
+            android:id="@+id/logOutItem"
+            android:title="@string/navMenuLogOut"
+            android:icon="@drawable/log_out"
+            />
     </group>
 </menu>
