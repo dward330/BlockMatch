@@ -120,6 +120,13 @@ public class GridMatchingGame extends AppCompatActivity implements GameActions {
 
     }
 
+    /**
+     * Empty to adhere to interface
+     */
+    public void openMenu() {
+
+    }
+
     /*
     * Starts a new Game
     * */

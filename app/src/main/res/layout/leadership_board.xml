@@ -5,16 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <com.google.android.material.tabs.TabLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/gameModes"
+        android:orientation="horizontal"
         android:background="@color/black"
-        app:tabTextColor="@color/red_pink"
-        app:tabMode="scrollable"
-        app:tabIndicatorColor="@color/red_pink"
-        app:tabGravity="fill">
-    </com.google.android.material.tabs.TabLayout>
+        android:paddingBottom="10dp">
+        <ImageView
+            android:id="@+id/menuIconImageView"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/black"
+            android:src="@drawable/menu_thin_icon"
+            android:layout_gravity="bottom"
+            android:paddingEnd="10dp"
+            />
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/gameModes"
+            android:background="@color/black"
+            app:tabTextColor="@color/red_pink"
+            app:tabMode="scrollable"
+            app:tabIndicatorColor="@color/red_pink"
+            app:tabGravity="fill">
+        </com.google.android.material.tabs.TabLayout>
+    </LinearLayout>
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/leadershipBoard"
         android:layout_width="match_parent"

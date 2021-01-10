@@ -3,6 +3,7 @@ package derrick.ward.blockmatch.screens;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -230,6 +231,11 @@ public class LandingScreen extends AppCompatActivity implements NavigationView.O
         this.drawerLayout.closeDrawer(GravityCompat.START);
 
         this.currentActiveScreen = "gameModeChooser";
+    }
+
+    @Override
+    public void openMenu() {
+        this.drawerLayout.openDrawer(Gravity.LEFT);
     }
 
     @Override
