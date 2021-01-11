@@ -5,4 +5,6 @@ public interface GameActions {
     public void gameFinished(int score);
 
     public void startGame();
+
+    public void openMenu();
 }

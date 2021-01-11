@@ -1,4 +1,4 @@
-package derrick.ward.blockmatch.services;
+package derrick.ward.blockmatch.services.adapters;
 
 import android.content.Context;
 
@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import derrick.ward.blockmatch.screens.fragments.GameModeChooser;
 import derrick.ward.blockmatch.screens.fragments.LeadershipSection;
+import derrick.ward.blockmatch.services.GameActions;
 
 public class LeadershipBoardPager extends FragmentStatePagerAdapter {
     private Context context;

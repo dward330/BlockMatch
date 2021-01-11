@@ -1,9 +1,19 @@
 package derrick.ward.blockmatch.screens;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import derrick.ward.blockmatch.R;
@@ -63,5 +73,11 @@ public class LoginSignUp extends AppCompatActivity {
                 fragmentTransaction.commit();
                 break;
         }
+    }
+
+    // Needed if we are going to request permissions in a fragment (Which we will in User Registration Fragment)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

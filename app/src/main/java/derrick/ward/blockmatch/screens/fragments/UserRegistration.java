@@ -1,5 +1,6 @@
 package derrick.ward.blockmatch.screens.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,19 +9,24 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,8 +40,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import derrick.ward.blockmatch.R;
 import derrick.ward.blockmatch.models.User;
@@ -48,7 +59,7 @@ import derrick.ward.blockmatch.services.FirebaseUtility;
  */
 public class UserRegistration extends Fragment implements PopupMenu.OnMenuItemClickListener {
     private static final int REQUEST_FOR_CAMERA=0011;
-    private static final int REQUEST_FOR_LOCATION = 123;
+    private static final int REQUEST_FOR_PHOTO_GALLERY=0100;
     public static final int RESULT_OK = -1;
     private Context context;
     private ImageView profilePhoto;
@@ -56,6 +67,7 @@ public class UserRegistration extends Fragment implements PopupMenu.OnMenuItemCl
     private EditText emailAddress;
     private EditText password;
     private EditText displayName;
+    private Button signUpButton;
 
     public UserRegistration (Context context) {
         this.context = context;
@@ -68,11 +80,45 @@ public class UserRegistration extends Fragment implements PopupMenu.OnMenuItemCl
         // Register UI Elements
         profilePhoto = loginFragment.findViewById(R.id.signUpProfilePhoto);
         profilePhoto.setOnClickListener(registerLaunchProfilePhotoMenuHandler());
-        emailAddress = loginFragment.findViewById(R.id.signUpEmail);
-        password = loginFragment.findViewById(R.id.signUpPassword);
-        displayName = loginFragment.findViewById(R.id.signUpDisplayName);
-        Button signUpButton = loginFragment.findViewById(R.id.signUp);
+        signUpButton = loginFragment.findViewById(R.id.signUp);
         signUpButton.setOnClickListener(registerCreateUserEventHandler());
+
+        emailAddress = loginFragment.findViewById(R.id.signUpEmail);
+        emailAddress.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    password.requestFocus();
+                }
+                return handled;
+            }
+        });
+
+        displayName = loginFragment.findViewById(R.id.signUpDisplayName);
+        displayName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    signUpButton.setFocusableInTouchMode(true);
+                    signUpButton.requestFocus();
+                }
+                return handled;
+            }
+        });
+
+        password = loginFragment.findViewById(R.id.signUpPassword);
+        password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    displayName.requestFocus();
+                }
+                return handled;
+            }
+        });
 
         return loginFragment;
     }
@@ -88,11 +134,11 @@ public class UserRegistration extends Fragment implements PopupMenu.OnMenuItemCl
                 if (isFormValid()) {
                     User user = new User();
                     user.email = emailAddress.getText().toString().trim();
-                    user.password = password.getText().toString().trim();
+                    String passwordEntered = password.getText().toString().trim();
                     user.displayName = displayName.getText().toString().trim();
 
                     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                    firebaseAuth.createUserWithEmailAndPassword(user.email, user.password)
+                    firebaseAuth.createUserWithEmailAndPassword(user.email, passwordEntered)
                                 .addOnSuccessListener((Activity) context, newUserRegistrationSuccessListener(user))
                                 .addOnFailureListener((Activity) context, new OnFailureListener() {
                                     @Override
@@ -245,16 +291,34 @@ public class UserRegistration extends Fragment implements PopupMenu.OnMenuItemCl
 
     /* Launches Photo Gallery so user make select photo */
     private void selectPhoto(){
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            String[] permissionsList = new String[1];
+            permissionsList[0] = Manifest.permission.READ_EXTERNAL_STORAGE;
+            requestPermissions(permissionsList, REQUEST_FOR_PHOTO_GALLERY);
+
+            // Return and don't open photo gallery experience, so user can try again after pop-up window for permissions
+            return;
+        }
+
         Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        Intent chooser=Intent.createChooser(pickPhoto,"Select a Photo Gallery App.");
+        Intent chooser = Intent.createChooser(pickPhoto,"Select a Photo Gallery App.");
         if (pickPhoto.resolveActivity(this.context.getPackageManager()) != null) {
             startActivityForResult(pickPhoto, 1);}
     }
 
     /* Launches Camera App */
     private void takePhoto(){
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            String[] permissionsList = new String[1];
+            permissionsList[0] = Manifest.permission.CAMERA;
+            requestPermissions(permissionsList, REQUEST_FOR_CAMERA);
+
+            // Return and don't open camera, so user can try again after pop-up window for permissions
+            return;
+        }
+
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "New Movie Post Photo");
+        values.put(MediaStore.Images.Media.TITLE, "New User Profile Photo");
         values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
         this.profilePhotoUri = this.context.getContentResolver().insert(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
@@ -262,14 +326,27 @@ public class UserRegistration extends Fragment implements PopupMenu.OnMenuItemCl
         intent.putExtra(MediaStore.EXTRA_OUTPUT, this.profilePhotoUri);
         Intent chooser=Intent.createChooser(intent,"Select a Camera App.");
         if (intent.resolveActivity(this.context.getPackageManager()) != null) {
-            startActivityForResult(chooser, REQUEST_FOR_CAMERA);}
+            startActivityForResult(chooser, REQUEST_FOR_CAMERA);
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode==REQUEST_FOR_LOCATION && ((grantResults.length>0 && grantResults[0]!= PackageManager.PERMISSION_GRANTED) || (grantResults.length>1 && grantResults[1]!=PackageManager.PERMISSION_GRANTED))){
-            Toast.makeText(context, "We need to access your location", Toast.LENGTH_SHORT).show();
+        boolean permissionGranted = ((grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) || (grantResults.length > 1 && grantResults[1] == PackageManager.PERMISSION_GRANTED));
+
+        if (requestCode == REQUEST_FOR_CAMERA){
+            if (permissionGranted) {
+                this.takePhoto();
+            } else {
+                Toast.makeText(context, getString(R.string.cameraRequestBlocked), Toast.LENGTH_LONG).show();
+            }
+        } else if (requestCode == REQUEST_FOR_PHOTO_GALLERY) {
+            if (permissionGranted) {
+                this.selectPhoto();
+            } else {
+                Toast.makeText(context, getString(R.string.readStorageRequestBlocked), Toast.LENGTH_LONG).show();
+            }
         }
     }
 

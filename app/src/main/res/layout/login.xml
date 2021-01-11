@@ -43,7 +43,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginEmail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:imeOptions="actionNext"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -57,15 +59,10 @@
                 android:id="@+id/loginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:imeOptions="actionNext"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
-    <Button
-        style="@style/loginSignUpButtons"
-        android:id="@+id/loginResetPassword"
-        android:layout_width="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/login"
-        android:text="@string/resetPassword"/>
     <Button
         style="@style/loginSignUpButtons"
         android:id="@+id/login"
@@ -76,8 +73,14 @@
         style="@style/loginSignUpButtons"
         android:id="@+id/loginSignUp"
         android:layout_width="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/resendEmailVerification"
+        app:layout_constraintBottom_toTopOf="@id/loginResetPassword"
         android:text="@string/signUp"/>
+    <Button
+        style="@style/loginSignUpButtons"
+        android:id="@+id/loginResetPassword"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toTopOf="@id/resendEmailVerification"
+        android:text="@string/resetPassword"/>
     <Button
         style="@style/loginSignUpButtons"
         android:id="@+id/resendEmailVerification"

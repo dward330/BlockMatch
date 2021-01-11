@@ -5,7 +5,6 @@ package derrick.ward.blockmatch.models;
  */
 public class User {
     public String email;
-    public String password;
     public String displayName;
     public String profilePhoto;
 

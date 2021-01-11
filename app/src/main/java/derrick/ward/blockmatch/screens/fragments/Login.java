@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,6 +35,10 @@ public class Login extends Fragment {
     private EditText email;
     private EditText password;
 
+    public Login() {
+
+    }
+
     public Login (Context context) {
         this.context = context;
     }
@@ -41,8 +48,6 @@ public class Login extends Fragment {
         View loginFragment = inflater.inflate(R.layout.login, container, false);
 
         // Register UI Elements
-        this.email = loginFragment.findViewById(R.id.loginEmail);
-        this.password = loginFragment.findViewById(R.id.loginPassword);
         Button resetPassword = loginFragment.findViewById(R.id.loginResetPassword);
         resetPassword.setOnClickListener(resetPasswordOnClickListener());
         Button login = loginFragment.findViewById(R.id.login);
@@ -51,6 +56,31 @@ public class Login extends Fragment {
         resendEmailVerification.setOnClickListener(resendEmailVerificationOnClickListener());
         Button signUp = loginFragment.findViewById(R.id.loginSignUp);
         signUp.setOnClickListener(navigateToRegistrationOnClickListener());
+
+        this.password = loginFragment.findViewById(R.id.loginPassword);
+        this.password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    resendEmailVerification.setFocusableInTouchMode(true);
+                    resendEmailVerification.requestFocus();
+                }
+                return handled;
+            }
+        });
+
+        this.email = loginFragment.findViewById(R.id.loginEmail);
+        this.email.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    password.requestFocus();
+                }
+                return handled;
+            }
+        });
 
         return loginFragment;
     }
