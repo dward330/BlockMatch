@@ -1,10 +1,40 @@
 {
   "project_info": {
     "project_number": "390573218280",
+    "firebase_url": "https://blockmatch-26d2b-default-rtdb.firebaseio.com",
     "project_id": "blockmatch-26d2b",
     "storage_bucket": "blockmatch-26d2b.appspot.com"
   },
   "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390573218280:android:9a9a05b02ac0739f912c5d",
+        "android_client_info": {
+          "package_name": "d.ward.blockmatch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390573218280-311esl7sujahgl2ckq8n0mr2p059gp7f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDISPryE2HjA5Du_Tfd8xkVBwYZ24-EpFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "390573218280-311esl7sujahgl2ckq8n0mr2p059gp7f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:390573218280:android:a2fdae3896b373d7912c5d",

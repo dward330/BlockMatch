@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="derrick.ward.blockmatch">
+    package="d.ward.blockmatch">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".screens.SplashScreen"
+            android:name="d.ward.blockmatch.screens.SplashScreen"
             android:theme="@style/NoTitle"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -24,24 +24,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".screens.LoginSignUp"
+            android:name="d.ward.blockmatch.screens.LoginSignUp"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".screens.LandingScreen"
+            android:name="d.ward.blockmatch.screens.LandingScreen"
             android:theme="@style/NoTitle"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".screens.GridMatchingGame"
+            android:name="d.ward.blockmatch.screens.GridMatchingGame"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".screens.EndOfGame"
+            android:name="d.ward.blockmatch.screens.EndOfGame"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".screens.ChatConversation"
+            android:name="d.ward.blockmatch.screens.ChatConversation"
             android:theme="@style/NoTitle"
             android:screenOrientation="portrait">
         </activity>
